@@ -25,6 +25,7 @@
     "console": true,
     "$": true,
     "_": true,
+    "Materialize": true,
     "moment": true,
     "jasmine": true,
     "describe": true,

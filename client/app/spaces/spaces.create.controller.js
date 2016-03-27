@@ -12,19 +12,19 @@ class SpaceCreateController {
   newSpace() {
     if (this.newSpaceName) {
       // Set description
-      var description = "This is the default description WOOOOW.";
-      if (this.newSpaceDescription != '') description = this.newSpaceDescription;
-      // this.newSpaceBeaconID = "56f70b1844a262f304b2ae23";
+      var description = 'This is the default description WOOOOW.';
+      if (this.newSpaceDescription !== '') {description = this.newSpaceDescription;}
+      this.newSpaceBeaconID = '56f70b1844a262f304b2ae23';
       // Create the space object
       var newSpace = {
         name: this.newSpaceName,
         description: description,
         beacons: [this.newSpaceBeaconID]
         // requriedUserInfo:{dropdowns: this.customDropDowns.dropDown}
-      }
+    };
       // Save it
       this.APIClient.createSpace(newSpace)
-        .then(response => {
+        .then(() => {
           // Show toast
            Materialize.toast('Your Space has been created!', 4000);
           // Clear input fields
@@ -42,18 +42,19 @@ class SpaceCreateController {
   }
 
   // New dropdown form for the space owner
+  // TODO: add a shitton of pre-defined dropdowns for them to choose from
   newDropDown() {
     // the number'th dropdown
     var number = this.customDropDowns.length + 1;
     var dropDown = {
       number: number,
-      label: "My Custom Dropdown",
+      label: 'My Custom Dropdown',
       editable: false,
-      optionStrings: [{value: "default option 1"},{value: "default option 2"}],
+      optionStrings: [{value: 'default option 1'},{value: 'default option 2'}],
       // TODO: add in Angular Matieral in order to use a nice material switch to
       // toggle this. Materialize doesnt have the switch :(
       matchUsers: true
-    }
+  };
     this.customDropDowns.push(dropDown);
     console.log(this.customDropDowns);
   }
@@ -66,7 +67,7 @@ class SpaceCreateController {
   }
   newDropDownOption(dropdown) {
     var count = dropdown.optionStrings.length;
-    dropdown.optionStrings.push({value: "default option " + count});
+    dropdown.optionStrings.push({value: 'default option ' + count});
   }
 }
 
