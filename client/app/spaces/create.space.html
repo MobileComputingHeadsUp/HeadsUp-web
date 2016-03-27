@@ -1,0 +1,56 @@
+<div class="container">
+  <h1>New Space </h1>
+
+  <!-- Basic Space info Form-->
+  <form class="thing-form">
+    <label>Syncs in realtime across clients</label>
+    <p class="input-group">
+      <h5>Basic Space Info</h5>
+      <input type="text" class="form-control" placeholder="New space's name" ng-model="sc.newSpaceName">
+      <input type="text" class="form-control" placeholder="New space's description" ng-model="sc.newSpaceDescription">
+      <input type="text" class="form-control" placeholder="New space's beacon id" ng-model="sc.newSpaceBeaconID">
+    </p>
+
+    <!-- Configure User Space Profile Options -->
+    <p class="input-group">
+      <h5>Information You'd Like Your Patrons to Provide Upon Profile creation</h5>
+      <div ng-repeat="dropdown in sc.customDropDowns" class="row">
+        <!-- Display the actual dropdown in form it would be shown to Users -->
+        <div class="input-field col s11" ng-hide="dropdown.editable">
+          <select class="browser-default">
+            <option value="" disabled selected>{{dropdown.label}}</option>
+            <option ng-repeat="option in dropdown.optionStrings" value="{{option.number}}">{{option.value}}</option>
+          </select>
+        </div>
+        <!-- View to customize the Dropdown title and Options -->
+        <a ng-hide="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.setDropdownEditable(dropdown)"><i class="material-icons">mode_edit</i></a>        <!-- Form to edit the dropdown -->
+        <div class="col s11 input-field" ng-show="dropdown.editable">
+          <input type="text" id="dd-title" ng-model="dropdown.label" placeholder="Enter a title for this dropdown">
+          <label class="active" for="dd-title">Dropdown Title</label>
+          <div class="input-field" ng-repeat="option in dropdown.optionStrings track by $index">
+            <input type="text"  id="UNIQUE{{$index}}" ng-model="option.value" placeholder="Fill in this drop down option">
+            <label class="active" for="UNIQUE{{$index}}">Option #{{$index + 1}}</label>
+          </div>
+          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.newDropDownOption(dropdown)"><i class="material-icons">add</i></a>
+        </div>
+        <!-- Button to "finish editing" the dropdown -->
+        <a ng-show="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.saveDropdown(dropdown)"><i class="material-icons">done</i></a>
+      </div>
+      <!-- End repeating the "custom dropwdowns" -->
+      <a id="dropDownButton" class="waves-effect waves-light btn deep-purple" ng-click="sc.newDropDown()">New Drop Down Option</a>
+    </p>
+    <!-- Save the new space button: end of form -->
+    <p class="input-group">
+      <div class="input-group-btn">
+        <button type="submit" class="btn btn-primary" ng-click="sc.newSpace()">Save</button>
+      </div>
+    </p>
+  </form>
+<div>
+
+<!-- Dumb hack to get material dropwdowns to work http://stackoverflow.com/questions/33894817/materialize-css-select-statement-not-showing -->
+<script>
+   $(document).ready(function() {
+      $('select').material_select();
+  });
+</script>

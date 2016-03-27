@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Your Spaces</h1>
+      <a class="waves-effect waves-light btn deep-purple" ui-sref="spaces-create">New Space</a>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in sl.spaces">
+        <div class="col s6">
+          <div class="card blue-grey lighten-1">
+            <div class="card-content white-text">
+              <div class="center-align">
+                <i class="large material-icons">location_on</i>
+              </div>
+              <span class="card-title">{{thing.name}}</span>
+              <p ng-show="thing.description !='' ">{{thing.description}}</p>
+            </div>
+            <div class="card-action">
+              <a href="#">Manage Space</a>
+              <a href="#" ng-click="sl.deleteThing(thing)">Delete Space</a>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
