@@ -31,7 +31,7 @@
 
 <nav ng-controller="NavbarController" class="blue-grey">
   <div class="nav-wrapper">
-    <a href="#" class="brand-logo center">Heads Up</a>
+    <a ui-sref="main" class="brand-logo center">Heads Up</a>
     <ul id="nav-mobile" class="left hide-on-med-and-down">
 
       <li ng-repeat="item in nav.menu" ui-sref-active="active">
@@ -42,7 +42,7 @@
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li ng-hide="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="signup">Sign up</a></li>
       <li ng-hide="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="login">Login</a></li>
-      <li ng-show="nav.isLoggedIn()"><p class="navbar-text">Hello {{ nav.getCurrentUser().name }}</p> </li>
+      <li ng-show="nav.isLoggedIn()">Hello {{ nav.getCurrentUser().name }} </li>
       <li ng-show="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="settings"><span class="glyphicon glyphicon-cog"></span></a></li>
       <li ng-show="nav.isLoggedIn()"><a ui-sref="logout">Logout</a></li>
     </ul>

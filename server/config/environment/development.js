@@ -6,7 +6,7 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/headsupweb-dev'
+    uri: 'mongodb://headsup:headsup@ds025469.mlab.com:25469/headsup'
   },
 
   // Seed database on startup
