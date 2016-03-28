@@ -9,6 +9,10 @@ angular.module('headsUpWebApp')
       })
       .state('how-it-works', {
         url: '/howitworks',
-        templateUrl: 'app/main/howitworks.html'
+        templateUrl: 'app/misc/howitworks.html'
+      })
+      .state('contact', {
+        url: '/contact',
+        templateUrl: 'app/misc/contact.html'
       });
   });
