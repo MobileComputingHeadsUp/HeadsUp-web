@@ -14,8 +14,18 @@ angular.module('headsUpWebApp')
         templateUrl: 'app/spaces/create.space.html',
         controller: 'SpaceCreateController',
         controllerAs: 'sc'
-      });
-  })
+      })
+      .state('spaces-manage', {
+        url: '/spaces/:id',
+        templateUrl: 'app/spaces/manage.space.html',
+        controller: 'SpaceManageController',
+        controllerAs: 'sc',
+        params: {
+            space: null
+        }
+    });
+
+});
   // .run(function($rootScope) {
   //   $rootScope.$on('$stateChangeStart', function(event, next, nextParams, current) {
   //     if (next.name === 'logout' && current && current.name && !current.authenticate) {

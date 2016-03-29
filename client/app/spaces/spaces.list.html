@@ -14,7 +14,8 @@
               <p ng-show="thing.description !='' ">{{thing.description}}</p>
             </div>
             <div class="card-action">
-              <a href="#">Manage Space</a>
+              <!-- <a href="/spaces/{{thing._id}}">Manage Space</a> -->
+              <a ui-sref="spaces-manage({ space: thing })">Manage Space</a>
               <a href="#" ng-click="sl.deleteThing(thing)">Delete Space</a>
             </div>
           </div>

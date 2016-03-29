@@ -17,18 +17,19 @@ class SpaceListController {
     this.APIClient.getAllSpaces()
       .then(response => {
         this.spaces = response;
-        console.log("The spaces: ");
+        console.log('The spaces: ');
         console.log(this.spaces);
-      })
+    });
   }
 
   deleteThing(space) {
     this.APIClient.deleteSpace(space._id)
-      .then(response => {
+      .then(() => {
         // Reload list of spaces
         this.onInit();
-      })
+    });
   }
+
 }
 // end class
 
