@@ -14,12 +14,11 @@ class SpaceCreateController {
       // Set description
       var description = 'This is the default description WOOOOW.';
       if (this.newSpaceDescription !== '') {description = this.newSpaceDescription;}
-      this.newSpaceBeaconID = '56f70b1844a262f304b2ae23';
       // Create the space object
       var newSpace = {
         name: this.newSpaceName,
         description: description,
-        beacons: [this.newSpaceBeaconID]
+        identifier: this.newSpaceBeaconID
         // requriedUserInfo:{dropdowns: this.customDropDowns.dropDown}
     };
       // Save it

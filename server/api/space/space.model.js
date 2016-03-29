@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var SpaceSchema = new Schema({
   name: String,
   description: String,
+  spaceOwner: {type: Schema.Types.ObjectId, ref: 'User'},
   usersInSpace: [{type: Schema.Types.ObjectId, ref: 'User'}],
   beacons: [{type: Schema.Types.ObjectId, ref: 'Beacon'}],
   ads: [{type: Schema.Types.ObjectId, ref: 'Ad'}],

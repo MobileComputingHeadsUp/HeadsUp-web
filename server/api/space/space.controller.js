@@ -11,75 +11,45 @@
 
 import _ from 'lodash';
 import Space from './space.model';
-
-function respondWithResult(res, statusCode) {
-  statusCode = statusCode || 200;
-  return function(entity) {
-    if (entity) {
-      res.status(statusCode).json(entity);
-    }
-  };
-}
-
-function saveUpdates(updates) {
-  return function(entity) {
-    var updated = _.merge(entity, updates);
-    return updated.save()
-      .then(updated => {
-        return updated;
-      });
-  };
-}
-
-function removeEntity(res) {
-  return function(entity) {
-    if (entity) {
-      return entity.remove()
-        .then(() => {
-          res.status(204).end();
-        });
-    }
-  };
-}
-
-function handleEntityNotFound(res) {
-  return function(entity) {
-    if (!entity) {
-      res.status(404).end();
-      return null;
-    }
-    return entity;
-  };
-}
-
-function handleError(res, statusCode) {
-  statusCode = statusCode || 500;
-  return function(err) {
-    res.status(statusCode).send(err);
-  };
-}
+import Beacon from '../beacon/beacon.model';
+var ResponseHandler = require('../utilities/response.handlers.js');
 
 // Gets a list of Spaces
 export function index(req, res) {
   return Space.find().exec()
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
 }
 
 // Gets a single Space from the DB
 export function show(req, res) {
   return Space.findById(req.params.id).exec()
-    .then(handleEntityNotFound(res))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then(ResponseHandler.handleEntityNotFound(res))
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
 }
 
 // Creates a new Space in the DB
 export function create(req, res) {
   console.log(req.body);
-  return Space.create(req.body)
-    .then(respondWithResult(res, 201))
-    .catch(handleError(res));
+  var beaconIdentifier = req.body.identifier;
+  // Create a beacon with the passed in identifier
+  var beacon = {
+      identifier: beaconIdentifier,
+      name: 'A beacon'
+  }
+  // TODO: abstract beacon create into own function somewhere else
+  Beacon.create(beacon)
+    .then(newBeacon => {
+        var newSpace = req.body;
+        newSpace.beacons = [newBeacon._id];
+        return Space.create(newSpace)
+          .then(ResponseHandler.respondWithResult(res, 201))
+          .catch(ResponseHandler.handleError(res));
+    }, error => {
+        console.log('Error creating the beacon');
+        console.log(error);
+    })
 }
 
 // Updates an existing Space in the DB
@@ -88,16 +58,16 @@ export function update(req, res) {
     delete req.body._id;
   }
   return Space.findById(req.params.id).exec()
-    .then(handleEntityNotFound(res))
-    .then(saveUpdates(req.body))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+    .then(ResponseHandler.handleEntityNotFound(res))
+    .then(ResponseHandler.saveUpdates(req.body))
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
 }
 
 // Deletes a Space from the DB
 export function destroy(req, res) {
   return Space.findById(req.params.id).exec()
-    .then(handleEntityNotFound(res))
-    .then(removeEntity(res))
-    .catch(handleError(res));
+    .then(ResponseHandler.handleEntityNotFound(res))
+    .then(ResponseHandler.removeEntity(res))
+    .catch(ResponseHandler.handleError(res));
 }
