@@ -9,6 +9,9 @@ module.exports = {
   DOMAIN:           'http://localhost:9000',
   SESSION_SECRET:   'headsupweb-secret',
 
+  GOOGLE_ID: '1093664181012-u0cdesqbprhp7p6toinn4s2mkte9fpj6.apps.googleusercontent.com',
+  GOOGLE_SECRET: '-R2EYwjDbTdX-Z3hsZ7T1bKx',
+
   // Control debug level for modules using visionmedia/debug
   DEBUG: ''
 };
