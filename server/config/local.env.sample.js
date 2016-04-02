@@ -11,6 +11,7 @@ module.exports = {
 
   GOOGLE_ID: '1093664181012-u0cdesqbprhp7p6toinn4s2mkte9fpj6.apps.googleusercontent.com',
   GOOGLE_SECRET: '-R2EYwjDbTdX-Z3hsZ7T1bKx',
+  ANDROID_GOOGLE_ID: '1093664181012-ct6jnr5gh2ij5sa6gr6ljn5nlo3u5j8j.apps.googleusercontent.com',
 
   // Control debug level for modules using visionmedia/debug
   DEBUG: ''

@@ -13,5 +13,6 @@ var router = express.Router();
 
 router.use('/local', require('./local').default);
 router.use('/google', require('./google').default);
+router.use('/google-token', require('./google-token').default);
 
 export default router;
