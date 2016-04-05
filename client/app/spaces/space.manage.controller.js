@@ -13,20 +13,24 @@ class SpaceManageController {
     console.log(this.currentSpace);
     //console.log(this.currentSpace.type);
     this.$stateParams.id = this.currentSpace._id;
-    Object.prototype.getName = function() {
-      var funcNameRegex = /function (.{1,})\(/;
-      var results = (funcNameRegex).exec((this).constructor.toString());
-      return (results && results.length > 1) ? results[1] : "";
-    };
     //this.testNum = 123;
+    console.log(this.currentSpace.beacons);
   }
 
-  addBeacon(){
-    if(this.currentSpace.beacons.indexOf(null) == -1)
-      this.currentSpace.beacons.push(null);
+  addBeacon(beacon){
+    if(this.currentSpace.beacons.indexOf(beacon) == -1){
+      this.currentSpace.beacons.push(beacon);
+    }
+    if(this.currentSpace.beacons.indexOf(null) !== -1){
+      this.currentSpace.beacons.splice(this.currentSpace.beacons.indexOf(null), 1);
+    }
+    if(this.currentSpace.beacons.indexOf(null) == -1){
+      this.currentSpace.beacons.push(null); //
+    }
+    console.log(this.currentSpace.beacons);
   }
   deleteBeacon(beacon){
-    console.log("test");
+    //console.log("test");
     if(this.currentSpace.beacons.indexOf(beacon) !== -1){
       this.currentSpace.beacons.splice(this.currentSpace.beacons.indexOf(beacon), 1);
     }
@@ -39,10 +43,6 @@ class SpaceManageController {
         .then(() => {
         // Show toast
         Materialize.toast('Your Space has been updated!', 4000);
-      // Clear input fields
-      this.newSpaceName = '';
-      this.newSpaceDescription = '';
-      this.newSpaceBeaconID = '';
     }, error => {
         Materialize.toast('Shit, an error', 4000);
         console.log(error);

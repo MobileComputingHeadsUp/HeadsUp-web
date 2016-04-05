@@ -14,16 +14,16 @@
         <label for="space-desc">Space Description</label>
         <input type="text" id="space-desc" placeholder="New space's description" ng-model="sm.currentSpace.description">
         <div class = "row" ng-repeat="beacon in sm.currentSpace.beacons">
-          <div class = "col s10">
+          <div class = "col s11">
             <label for="space-beacon">Beacon Identifier</label>
             <input type="text" id="space-beacon"  placeholder="New space's beacon id" ng-model="beacon">
           </div>
           <div class = "col s1">
             <a class="btn-floating btn-large waves-effect waves-light red" ng-click="sm.deleteBeacon(beacon)"><i class="material-icons">close</i></a>
           </div>
-          <div class = "col s1">
-            <a class="btn-floating btn-large waves-effect waves-light red" ng-click="sm.addBeacon()"><i class="material-icons">add</i></a>
-          </div>
+        </div>
+        <div class="row right-align">
+          <a class="btn-floating btn-large waves-effect waves-light red" ng-click="sm.addBeacon(beacon)"><i class="material-icons">add</i></a>
         </div>
     </div>
 
