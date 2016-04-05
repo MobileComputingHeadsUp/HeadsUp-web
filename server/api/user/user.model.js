@@ -21,7 +21,22 @@ var UserSchema = new Schema({
   provider: String,
   salt: String,
   google: {},
-  github: {}
+  github: {},
+  // Custom Space Profiles
+  spaceProfiles: [{
+      spaceID: {type: Schema.Types.ObjectId, ref: 'Space'},
+      requiredUserInfoVersion: Number, // Not sure what this is for. Brad???
+      data: {} // Any JSON data associated with this space
+  }],
+  // Generic User data which could be of value to a space
+  twitterHandle: String,
+  instagramHandle: String,
+  githubHandle: String,
+  snapchatHandle: String,
+  linkedinURL: String,
+  facebookURL: String,
+  bio: String, // A basic bio
+  birthday: Date
 });
 
 /**
@@ -37,6 +52,16 @@ UserSchema
       'role': this.role
     };
   });
+
+  // Virtual age information
+  UserSchema
+    .virtual('age')
+    .get(function() {
+      return {
+        // TODO: Make this actually return age in like "21" as a string
+        Date.now() - this.birthday
+      };
+    });
 
 // Non-sensitive info we'll be putting in the token
 UserSchema
