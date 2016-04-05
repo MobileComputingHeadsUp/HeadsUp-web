@@ -53,7 +53,7 @@ class SpaceCreateController {
       // TODO: add in Angular Matieral in order to use a nice material switch to
       // toggle this. Materialize doesnt have the switch :(
       matchUsers: true
-  };
+    };
     this.customDropDowns.push(dropDown);
     console.log(this.customDropDowns);
   }
@@ -65,7 +65,7 @@ class SpaceCreateController {
     dropdown.editable = false;
   }
   newDropDownOption(dropdown) {
-    var count = dropdown.optionStrings.length;
+    var count = dropdown.optionStrings.length+1;
     dropdown.optionStrings.push({value: 'default option ' + count});
   }
 }

@@ -19,7 +19,7 @@ angular.module('headsUpWebApp')
         url: '/spaces/:id',
         templateUrl: 'app/spaces/manage.space.html',
         controller: 'SpaceManageController',
-        controllerAs: 'sc',
+        controllerAs: 'sm',
         params: {
             space: null
         }
