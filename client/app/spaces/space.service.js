@@ -6,7 +6,8 @@ function SpaceResource($resource) {
   return $resource('/api/spaces/:id', {
     id: '@_id'
   }, {
-    'update': {method: 'PUT'}
+    'update': {method: 'PUT'},
+    'mySpaces':{method: 'GET', isArray: true, url: '/api/spaces/mine'}
   });
 }
 

@@ -3,24 +3,41 @@
     <div class="col-lg-12">
       <h1 class="page-header">Your Spaces</h1>
       <a class="waves-effect waves-light btn deep-purple" ui-sref="spaces-create">New Space</a>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in sl.spaces">
-        <div class="col s6">
-          <div class="card blue-grey lighten-1">
-            <div class="card-content white-text">
-              <div class="center-align">
-                <i class="large material-icons">location_on</i>
+
+      <!-- No spaces state -->
+      <div ng-hide="sl.spaces.length > 0">
+        <div class="row">
+          <div class="col s8 offset-s2">
+            <div class="card-panel amber">
+              <div class="white-text center-align">
+                You have no Spaces. Why don't you create one?
               </div>
-              <span class="card-title">{{thing.name}}</span>
-              <p ng-show="thing.description !='' ">{{thing.description}}</p>
-            </div>
-            <div class="card-action">
-              <!-- <a href="/spaces/{{thing._id}}">Manage Space</a> -->
-              <a ui-sref="spaces-manage({ space: thing })">Manage Space</a>
-              <a href="#" ng-click="sl.deleteThing(thing)">Delete Space</a>
             </div>
           </div>
         </div>
-      </ul>
+      </div>
+
+      <!-- List of your spaces. Only shown if you have > 0 spaces -->
+      <div ng-show="sl.spaces.length > 0">
+        <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in sl.spaces">
+          <div class="col s6">
+            <div class="card blue-grey lighten-1">
+              <div class="card-content white-text">
+                <div class="center-align">
+                  <i class="large material-icons">location_on</i>
+                </div>
+                <span class="card-title">{{thing.name}}</span>
+                <p ng-show="thing.description !='' ">{{thing.description}}</p>
+              </div>
+              <div class="card-action">
+                <!-- <a href="/spaces/{{thing._id}}">Manage Space</a> -->
+                <a ui-sref="spaces-manage({ space: thing })">Manage Space</a>
+                <a href="#" ng-click="sl.deleteThing(thing)">Delete Space</a>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
