@@ -15,6 +15,9 @@ var BeaconSchema = new Schema({
   },
   vicinitySensors: {
     sensors: [{type: Schema.Types.ObjectId, ref: 'Sensor'}]
+  },
+  added: {
+    type: Date
   }
 });
 

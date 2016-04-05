@@ -43,6 +43,8 @@ export function handleEntityNotFound(res) {
 export function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
+    console.log('THE ERROR WAS: ');
+    console.log(err);
     res.status(statusCode).send(err);
   };
 }

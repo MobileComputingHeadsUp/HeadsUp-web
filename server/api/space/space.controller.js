@@ -11,12 +11,19 @@
 
 import _ from 'lodash';
 import Space from './space.model';
-import Beacon from '../beacon/beacon.model';
+var BeaconController  = require('../beacon/beacon.controller.js');
 var ResponseHandler = require('../utilities/response.handlers.js');
 
 // Gets a list of Spaces
 export function index(req, res) {
-  return Space.find().exec()
+  return Space.find().populate('beacons').exec()
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
+}
+
+// Gets a list of Spaces owned by the current user
+export function mySpaces(req, res) {
+  return Space.find({'spaceOwner': req.user._id}).populate('beacons').exec()
     .then(ResponseHandler.respondWithResult(res))
     .catch(ResponseHandler.handleError(res));
 }
@@ -38,18 +45,18 @@ export function create(req, res) {
       identifier: beaconIdentifier,
       name: 'A beacon'
   }
-  // TODO: abstract beacon create into own function somewhere else
-  Beacon.create(beacon)
+  BeaconController.create(beacon)
     .then(newBeacon => {
         var newSpace = req.body;
+        var user = req.user;
+        newSpace.spaceOwner = user;
+        console.log(newSpace);
         newSpace.beacons = [newBeacon._id];
         return Space.create(newSpace)
           .then(ResponseHandler.respondWithResult(res, 201))
           .catch(ResponseHandler.handleError(res));
-    }, error => {
-        console.log('Error creating the beacon');
-        console.log(error);
     })
+    .catch(ResponseHandler.handleError(res));
 }
 
 // Updates an existing Space in the DB

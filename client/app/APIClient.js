@@ -11,6 +11,9 @@ function APIClient($location, $http, $cookies, $q, Util, Auth, Space) {
     getAllSpaces() {
       return Space.query().$promise;
     },
+    getMySpaces() {
+      return Space.mySpaces().$promise
+    },
     getASpace(id) {
       return Space.get({id: id}).$promise;
     },

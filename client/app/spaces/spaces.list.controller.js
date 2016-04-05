@@ -14,7 +14,7 @@ class SpaceListController {
 
   onInit() {
     // Load all spaces
-    this.APIClient.getAllSpaces()
+    this.APIClient.getMySpaces()
       .then(response => {
         this.spaces = response;
         console.log('The spaces: ');
