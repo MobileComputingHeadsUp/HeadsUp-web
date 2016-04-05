@@ -14,9 +14,12 @@
         <label for="space-desc">Space Description</label>
         <input type="text" id="space-desc" placeholder="New space's description" ng-model="sm.currentSpace.description">
         <div class = "row" ng-repeat="beacon in sm.currentSpace.beacons">
-          <div class = "col s11">
+          <div class = "col s10">
             <label for="space-beacon">Beacon Identifier</label>
-            <input type="text" id="space-beacon"  placeholder="New space's beacon id" ng-model="sm.currentSpace.beacons">
+            <input type="text" id="space-beacon"  placeholder="New space's beacon id" ng-model="beacon">
+          </div>
+          <div class = "col s1">
+            <a class="btn-floating btn-large waves-effect waves-light red" ng-click="sm.deleteBeacon(beacon)"><i class="material-icons">close</i></a>
           </div>
           <div class = "col s1">
             <a class="btn-floating btn-large waves-effect waves-light red" ng-click="sm.addBeacon()"><i class="material-icons">add</i></a>
@@ -60,7 +63,7 @@
     <!-- Save the new space button: end of form -->
     <p class="input-group">
     <div class="input-group-btn">
-      <button type="submit" class="btn btn-primary" ng-click="sc.newSpace()">Save</button>
+      <button type="submit" class="btn btn-primary" ng-click="sm.saveSpace()">Save</button>
     </div>
     </p>
   </form>
