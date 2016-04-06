@@ -62,12 +62,33 @@ export function update(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  BeaconController.updateBeacons(req.body.beacons, () => {
-    return Space.findById(req.params.id).populate('beacons').exec()
-      .then(ResponseHandler.handleEntityNotFound(res))
-      .then(ResponseHandler.saveUpdates(req.body))
-      .then(ResponseHandler.respondWithResult(res))
-      .catch(ResponseHandler.handleError(res));
+  // Split up this spaces beacons by new beacons being added and exisiting
+  // beacons being updated
+  var beacons = req.body.beacons;
+  var newBeacons = [];
+  var existingBeacons = [];
+  for (var beacon of beacons) {
+    if (beacon._id == undefined) {
+        newBeacons.push(beacon);
+    } else existingBeacons.push(beacon);
+  }
+
+  // Create beacons, then update existing beacons, then save the space!
+  BeaconController.createBeacons(newBeacons, res, createdBeacons => {
+    BeaconController.updateBeacons(existingBeacons, res, updatedBeacons => {
+      // Combine both the newly created beacons and the newly updated beacons
+      // into a single array
+      var totalBeacons = updatedBeacons.concat(createdBeacons);
+      // When we save to the DB, we only want to save the beacon IDs to the space's beacons arr
+      // not the actual beacon objects
+      req.body.beacons = totalBeacons.map(beacon => beacon._id);
+      // Finally, save the Space.
+      return Space.findById(req.params.id).popula.exec()
+        .then(ResponseHandler.handleEntityNotFound(res))
+        .then(ResponseHandler.saveUpdates(req.body))
+        .then(ResponseHandler.respondWithResult(res))
+        .catch(ResponseHandler.handleError(res));
+    });
   });
 
 }

@@ -18,7 +18,8 @@ var BeaconSchema = new Schema({
   },
   added: {
     type: Date
-  }
+  },
+  space: {type: Schema.Types.ObjectId, ref: 'Space'}
 });
 
 export default mongoose.model('Beacon', BeaconSchema);
