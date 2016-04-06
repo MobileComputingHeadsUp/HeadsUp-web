@@ -62,11 +62,14 @@ export function update(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  return Space.findById(req.params.id).exec()
-    .then(ResponseHandler.handleEntityNotFound(res))
-    .then(ResponseHandler.saveUpdates(req.body))
-    .then(ResponseHandler.respondWithResult(res))
-    .catch(ResponseHandler.handleError(res));
+  BeaconController.updateBeacons(req.body.beacons, () => {
+    return Space.findById(req.params.id).populate('beacons').exec()
+      .then(ResponseHandler.handleEntityNotFound(res))
+      .then(ResponseHandler.saveUpdates(req.body))
+      .then(ResponseHandler.respondWithResult(res))
+      .catch(ResponseHandler.handleError(res));
+  });
+
 }
 
 // Deletes a Space from the DB
