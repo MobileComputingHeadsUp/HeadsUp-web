@@ -38,7 +38,6 @@ export function show(req, res) {
 
 // Creates a new Space in the DB
 export function create(req, res) {
-  console.log(req.body);
   var beaconIdentifier = req.body.identifier;
   // Create a beacon with the passed in identifier
   var beacon = {
@@ -50,7 +49,6 @@ export function create(req, res) {
         var newSpace = req.body;
         var user = req.user;
         newSpace.spaceOwner = user;
-        console.log(newSpace);
         newSpace.beacons = [newBeacon._id];
         return Space.create(newSpace)
           .then(ResponseHandler.respondWithResult(res, 201))

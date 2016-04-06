@@ -54,14 +54,14 @@ UserSchema
   });
 
   // Virtual age information
-  UserSchema
-    .virtual('age')
-    .get(function() {
-      return {
-        // TODO: Make this actually return age in like "21" as a string
-        Date.now() - this.birthday
-      };
-    });
+  // UserSchema
+  //   .virtual('age')
+  //   .get(function() {
+  //     return {
+  //       // TODO: Make this actually return age in like "21" as a string
+  //       Date.now() - this.birthday
+  //     };
+  //   });
 
 // Non-sensitive info we'll be putting in the token
 UserSchema

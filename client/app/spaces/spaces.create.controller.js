@@ -14,12 +14,17 @@ class SpaceCreateController {
       // Set description
       var description = 'This is the default description WOOOOW.';
       if (this.newSpaceDescription !== '') {description = this.newSpaceDescription;}
+      // Clean up the options array -> See the function declartion to see why
+      // this is necessary.
+      this.cleanUpOptionsArray();
+      console.log('cleaned up the options array ');
+      console.log(this.customDropDowns);
       // Create the space object
       var newSpace = {
         name: this.newSpaceName,
         description: description,
-        identifier: this.newSpaceBeaconID
-        // requriedUserInfo:{dropdowns: this.customDropDowns.dropDown}
+        identifier: this.newSpaceBeaconID,
+        requriedUserInfo:{dropdown: this.customDropDowns}
     };
       // Save it
       this.APIClient.createSpace(newSpace)
@@ -30,13 +35,11 @@ class SpaceCreateController {
           this.newSpaceName = '';
           this.newSpaceDescription = '';
           this.newSpaceBeaconID = '';
+          window.location.href = '/spaces';
         }, error => {
             Materialize.toast('Shit, an error', 4000);
             console.log(error);
         });
-      // TODO: figure out what beacon ID we will be putting in here!
-      // In order for mongoose to save the object the string inputted in the form
-      // needs to be of the right format of Schema.Types.ObjectId
     }
   }
 
@@ -67,6 +70,24 @@ class SpaceCreateController {
   newDropDownOption(dropdown) {
     var count = dropdown.optionStrings.length;
     dropdown.optionStrings.push({value: 'default option ' + count});
+  }
+  // Function utilized to transform the drop down options array
+  // In order to display the options in HTML via Angular's ng-repeat,
+  // each dropdown option must be an object, not a raw string. Though, when
+  // we want to save the data to the database, we want an array of raw strings.
+  // This function does that :-)
+  cleanUpOptionsArray() {
+      let dropdowns = [];
+      for (var i = 0; i < this.customDropDowns.length; ++i) {
+          let currentDropdown = this.customDropDowns[i];
+          dropdowns.push(currentDropdown);
+          for (var j = 0; j < currentDropdown.optionStrings.length; ++j) {
+              let stringVal = currentDropdown.optionStrings[j].value;
+              dropdowns[i].optionStrings[j] = stringVal;
+          }
+      }
+      // set this.customDropDowns to our new, fixed dropdowns array
+      this.customDropDowns = dropdowns;
   }
 }
 
