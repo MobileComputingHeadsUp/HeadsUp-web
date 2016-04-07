@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var BeaconSchema = new Schema({
   identifier: {type: String, required: true, unique: true},
   name: String,
-  entry: {type: Boolean, required: true, default: false},
+  entry: {type: Boolean, required: true, default: true},
   enqueue: {
     queueName: String
   },
@@ -22,4 +22,5 @@ var BeaconSchema = new Schema({
   space: {type: Schema.Types.ObjectId, ref: 'Space'}
 });
 
-export default mongoose.model('Beacon', BeaconSchema);
+// Export the schema, not as a mongoose model since we want to use this as a sub document.
+export default BeaconSchema;

@@ -38,22 +38,22 @@ Thing.find({}).remove()
              'and openshift subgenerators'
     });
   });
-
-User.find({}).remove()
-  .then(() => {
-    User.create({
-      provider: 'local',
-      name: 'Test User',
-      email: 'test@example.com',
-      password: 'test'
-    }, {
-      provider: 'local',
-      role: 'admin',
-      name: 'Admin',
-      email: 'admin@example.com',
-      password: 'admin'
-    })
-    .then(() => {
-      console.log('finished populating users');
-    });
-  });
+// 
+// User.find({}).remove()
+//   .then(() => {
+//     User.create({
+//       provider: 'local',
+//       name: 'Test User',
+//       email: 'test@example.com',
+//       password: 'test'
+//     }, {
+//       provider: 'local',
+//       role: 'admin',
+//       name: 'Admin',
+//       email: 'admin@example.com',
+//       password: 'admin'
+//     })
+//     .then(() => {
+//       console.log('finished populating users');
+//     });
+//   });
