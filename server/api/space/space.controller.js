@@ -11,8 +11,7 @@
 
 import _ from 'lodash';
 import Space from './space.model';
-var BeaconController  = require('../beacon/beacon.controller.js');
-var ResponseHandler = require('../utilities/response.handlers.js');
+const ResponseHandler = require('../utilities/response.handlers.js');
 
 // Gets a list of Spaces
 export function index(req, res) {
@@ -38,33 +37,51 @@ export function show(req, res) {
 
 // Creates a new Space in the DB
 export function create(req, res) {
-  var beaconIdentifier = req.body.identifier;
-  // Create a beacon with the passed in identifier
-  var beacon = {
-      identifier: beaconIdentifier,
-      name: 'A beacon'
-  }
-  BeaconController.create(beacon)
-    .then(newBeacon => {
-        var newSpace = req.body;
-        var user = req.user;
-        newSpace.spaceOwner = user;
-        newSpace.beacons = [newBeacon._id];
-        return Space.create(newSpace)
-          .then(ResponseHandler.respondWithResult(res, 201))
-          .catch(ResponseHandler.handleError(res));
-    })
-    .catch(ResponseHandler.handleError(res));
+    // Get data from the request and create a space
+    const newSpace = req.body;
+    newSpace.spaceOwner = req.user;
+
+    // Create the space Mongoose model
+    const space = new Space(newSpace);
+
+    // Create a beacon with the passed in identifier
+    const beacon = {
+        identifier: req.body.identifier,
+        name: 'A default beacon',
+        space: space._id
+    }
+
+    // Push the beacon subdoc
+    space.beacons.push(beacon);
+
+    // Save the space to mongoDB
+    return space.save()
+        .then(ResponseHandler.respondWithResult(res, 201))
+        .catch(ResponseHandler.handleError(res));
 }
 
 // Updates an existing Space in the DB
 export function update(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
+  // Get the space from the body of the request
+  const space = req.body;
+
+  // Iterate thru the beacons in the request and forany new ones,
+  // Remove them from the space's list, and add the current space's ID to its space attribute
+  const newBeacons = _.remove(space.beacons, beacon => beacon.space === undefined );
+  newBeacons.forEach(beacon => beacon.space = space._id);
+
+  // Finally, find the space,
+  // Push the new beacons into its array. This will create subdocs for each one.
+  // Then with saveUpdates, merge the new changes to the exisiting attributes
+  // of the space with the space we got from the DB.
+  // (Which also has the new beacons we added) and save.
   return Space.findById(req.params.id).exec()
+    .then(space => {
+        newBeacons.forEach(beacon => space.beacons.push(beacon));
+        return space;
+    })
     .then(ResponseHandler.handleEntityNotFound(res))
-    .then(ResponseHandler.saveUpdates(req.body))
+    .then(ResponseHandler.saveUpdates(space))
     .then(ResponseHandler.respondWithResult(res))
     .catch(ResponseHandler.handleError(res));
 }

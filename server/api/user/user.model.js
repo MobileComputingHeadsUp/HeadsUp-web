@@ -25,7 +25,7 @@ var UserSchema = new Schema({
   // Custom Space Profiles
   spaceProfiles: [{
       spaceID: {type: Schema.Types.ObjectId, ref: 'Space'},
-      requiredUserInfoVersion: Number, // Not sure what this is for. Brad???
+      requiredUserInfoVersion: Number,
       data: {} // Any JSON data associated with this space
   }],
   // Generic User data which could be of value to a space

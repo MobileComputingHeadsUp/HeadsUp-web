@@ -12,6 +12,7 @@ export default function(app) {
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
   app.use('/api/spaces', require('./api/space'));
+  app.use('/api/beacons', require('./api/beacon'));
 
   app.use('/auth', require('./auth').default);
 
