@@ -19,6 +19,7 @@ var ResponseHandler = require('../utilities/response.handlers.js');
 // Middleware function which takes a request made from the android app,
 // Finds the associated user in the DB and attatches it to the request.
 export function attatchUserFromGoogleID(req, res, next) {
+    console.log("REQ: " + req);
     const googleID = req.body.google_id;
     console.log('the google id is: ');
     console.log(googleID);
@@ -45,14 +46,22 @@ export function testResponse(req, res) {
 // and responds with the required user space profile that the user will then fill out
 // on the app.
 export function hitBeacon(req, res) {
+
+    console.log("IN HIT REQ: " + req);
     // Init some useful variables
     const user = req.user;
-    const identifier = req.params.identifier;
+    const identifier = req.body.beacon_identifier;
+
+    console.log("IDENTIFIER: " + identifier);
 
     // Find the space that this beacon is in
     // Then, do cool shit
     return spaceByBeaconIdentifier(identifier)
         .then(space => {
+
+            if(space == undefined){
+              return {msg: "Could not find space."};
+            }
             // Get the beacon document we hit
             const beacon = space.beacons.find(beacon => beacon.identifier === identifier);
 
@@ -64,6 +73,9 @@ export function hitBeacon(req, res) {
             if (beacon.entry) {
                 // Check if this user is in the spaces, returns a boolean
                 const inSpace = space.usersInSpace.indexOf(user._id) > -1;
+
+                // For testing I want to always get the space stuff
+                // const inSpace = false;
 
                 // If user is in space already, just return it...
                 // dont need to do anything else, since this is an entry beacon
