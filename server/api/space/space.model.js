@@ -12,7 +12,7 @@ var SpaceSchema = new Schema({
   beacons: [Beacon],
   ads: [{type: Schema.Types.ObjectId, ref: 'Ad'}],
   sensors: [{type: Schema.Types.ObjectId, ref: 'Sensor'}],
-  requriedUserInfo: { // this will be versioned.
+  requiredUserInfo: { // this will be versioned.
     dropdown: [{
       label: String,
       optionStrings: [String],

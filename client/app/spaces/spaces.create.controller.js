@@ -24,7 +24,7 @@ class SpaceCreateController {
         name: this.newSpaceName,
         description: description,
         identifier: this.newSpaceBeaconID,
-        requriedUserInfo:{dropdown: this.customDropDowns}
+        requiredUserInfo:{dropdown: this.customDropDowns}
     };
       // Save it
       this.APIClient.createSpace(newSpace)

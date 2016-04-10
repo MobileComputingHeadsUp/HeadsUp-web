@@ -36,6 +36,20 @@ export function testResponse(req, res) {
     res.status(200).json({msg: 'hello world!'});
 }
 
+// Helper function for determing if user profile info is required
+export function userInfoRequired(user, space){
+  // Check to see if the users version of the space profile is up to Date.
+  let spaceProfiles = user.spaceProfiles;
+  if(spaceProfiles != undefined){
+    spaceProfiles.forEach(profile =>{
+      if(profile.spaceID == space._id && profile.requiredUserInfoVersion == space.requiredUserInfo.requiredUserInfoVersion){
+        return false;
+      }
+    });
+  }
+  return true;
+}
+
 // Function called when endpoint of the following format is hit:
 // Endpoint: '/api/beacons/:identifier'
 // This is what is called when you interact with a beacon via the mobile app.
@@ -47,12 +61,9 @@ export function testResponse(req, res) {
 // on the app.
 export function hitBeacon(req, res) {
 
-    console.log("IN HIT REQ: " + req);
     // Init some useful variables
     const user = req.user;
     const identifier = req.body.beacon_identifier;
-
-    console.log("IDENTIFIER: " + identifier);
 
     // Find the space that this beacon is in
     // Then, do cool shit
@@ -60,17 +71,27 @@ export function hitBeacon(req, res) {
         .then(space => {
 
             if(space == undefined){
-              return {msg: "Could not find space."};
+              return {
+                msg: "Could not find space.",
+                action: "NONE"
+              };
             }
             // Get the beacon document we hit
             const beacon = space.beacons.find(beacon => beacon.identifier === identifier);
 
             // Check for user. TODO: will remove this in future.
             // To interact, you must be signed in on the android app.
-            if (user === undefined) return {msg: "hey!! sign in you knucle head!"};
+            if (user === undefined) return {
+              msg: "hey!! sign in you knucle head!",
+              action: "SIGN_IN"
+            };
 
             // Check if beacon is an entry beacon
             if (beacon.entry) {
+
+                // Determine if user info is requiredData
+                let userInfoNeeded = userInfoRequired(user, space);
+
                 // Check if this user is in the spaces, returns a boolean
                 const inSpace = space.usersInSpace.indexOf(user._id) > -1;
 
@@ -80,7 +101,16 @@ export function hitBeacon(req, res) {
                 // If user is in space already, just return it...
                 // dont need to do anything else, since this is an entry beacon
                 if (inSpace) {
-                    return {msg: "Hey, you're in this space already silly!!"};
+                  if(userInfoNeeded){
+                    console.log("SPACE" + space);
+                    let requiredAction = "REQUIRED_USER_INFO";
+                    return {data: space.requiredUserInfo, spaceID: space._id, action: requiredAction};
+                  }else{
+                    return {
+                      msg: "Hey, you're in this space already silly!!",
+                      action: "NONE"
+                    };
+                  }
                 }
                 // Else, add the user to the space,
                 // and respond with the Space profile they need to create.
@@ -88,9 +118,8 @@ export function hitBeacon(req, res) {
                     space.usersInSpace.push(user._id);
                     return space.save()
                         .then(saved => {
-                            const requiredData = saved.requriedUserInfo;
-                            requiredData.spaceID = saved._id;
-                            return requiredData;
+                            let requiredAction = userInfoNeeded ? "REQUIRED_USER_INFO" : "SPACE_DASH";
+                            return {data: saved.requiredUserInfo, spaceID: saved._id, action: requiredAction}
                         })
                         .catch(ResponseHandler.handleError(res));
                 }
@@ -98,7 +127,10 @@ export function hitBeacon(req, res) {
             // Else, this is not an entry beacon
             // TODO: Implement other types of beacons
             else {
-                return {msg: 'Hey... we havent implemented non-entry beacons yet. Please try to interact with an entry beacon ;)'};
+                return {
+                  msg: 'Hey... we havent implemented non-entry beacons yet. Please try to interact with an entry beacon ;)',
+                  action: "NONE"
+                };
             }
         })
         .then(ResponseHandler.handleEntityNotFound(res))

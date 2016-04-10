@@ -18,6 +18,8 @@ function handleError(res, statusCode) {
 export function verifyToken(req, res) {
   var url = googleVerifyEndpoint + req.query.id_token;
 
+  console.log("YYOOOOOOOOOOOOO");
+
   request(url, function(error, response, body) {
     if(error) { res.status(500).send(error); }
 
@@ -33,12 +35,16 @@ export function verifyToken(req, res) {
     // Get the googleID from the response
     var googleID = data.sub;
 
+    console.log("AAAAAAAAAAAAAAAA");
+
     // Try to find a user with this id. If one does not exist, create one.
     User.findOne({'google.id': googleID}).exec()
       .then(user => {
         if (user) {
           console.log("USER EXISTS");
           console.log(user);
+          console.log("ABBBBBBBBBBBBBBBBBBB");
+
           return res.status(200).json(user);
         }
         console.log("DATA \n\n");
@@ -60,6 +66,8 @@ export function verifyToken(req, res) {
           }
         });
         console.log("BEFORE SAVING");
+        console.log("CCCCCCCCCCCCCCCCCC");
+
         user.save()
           .then(user => res.status(200).json(user))
           .catch(err => res.status(500).send(err));
