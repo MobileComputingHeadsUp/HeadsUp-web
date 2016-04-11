@@ -7,6 +7,30 @@ class SpaceCreateController {
   constructor($http, $scope, APIClient) {
     this.APIClient = APIClient;
     this.customDropDowns = [];
+    this.temperatureSensors = [{
+        name: 'Analog Temperature Sensor',
+        model: 'TMP36',
+        number: 0,
+        imgURL: 'assets/images/SensorImages/tmp36.jpg'
+      },
+      {
+        name: 'Digital Temperature Sensor',
+        model: 'TMP107BID',
+        number: 0,
+        imgURL: 'assets/images/SensorImages/tmp107.jpg'
+      }];
+    this.lightSensors = [{
+      name: 'Digital Ambient Light Sensor',
+      model: 'SFH 7771',
+      number: 0,
+      imgURL: 'assets/images/SensorImages/SFH_7771_DSL.jpg'
+      },
+      {
+      name: 'Digital Ambient Light Sensor',
+      model: 'Si1133-AA00-GMR',
+      number: 0,
+      imgURL: 'assets/images/SensorImages/QFN_10_Clear_SPL.jpg'
+      }];
   }
 
   newSpace() {
@@ -24,6 +48,7 @@ class SpaceCreateController {
         name: this.newSpaceName,
         description: description,
         identifier: this.newSpaceBeaconID,
+        sensors: [this.temperatureSensors,this.lightSensors],
         requriedUserInfo:{dropdown: this.customDropDowns}
     };
       // Save it

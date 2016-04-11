@@ -47,6 +47,36 @@
       <!-- End repeating the "custom dropwdowns" -->
       <a id="dropDownButton" class="waves-effect waves-light btn deep-purple" ng-click="sc.newDropDown()">New Drop Down Option</a>
     </p>
+    <!--Sensor Select -->
+    <p class="input-group">
+      <h5>Please Select the Sensors You Are Using In Your Space</h5>
+      <label style="display: block; margin-bottom: 1.0rem">
+        This information is not required to create your space
+      </label>
+      <h6>
+        Temperature Sensors
+      </h6>
+      <div class="row" ng-repeat="sensor in sc.temperatureSensors">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 image-wrapper">
+          <p> {{sensor.name}}: {{sensor.model}} </p>
+          <img src="{{sensor.imgURL}}" class="img-responsive" width="100px" height="100px"/>
+          <a>Amount: {{sensor.number}}</a>
+          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="if(sensor.number > 0){sensor.number = sensor.number - 1}">-</a>
+          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sensor.number = sensor.number + 1">+</a>
+
+        </div>
+      </div>
+      <h6>Light Sensors</h6>
+      <div class="row" ng-repeat="sensor in sc.lightSensors">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 image-wrapper">
+          <p> {{sensor.name}}: {{sensor.model}} </p>
+          <img src="{{sensor.imgURL}}" class="img-responsive" width="100px" height="100px"/>
+          <a>Amount: {{sensor.number}}</a>
+          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="if(sensor.number > 0){sensor.number = sensor.number - 1}">-</a>
+          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sensor.number = sensor.number + 1">+</a>
+
+        </div>
+      </div>
     <!-- Save the new space button: end of form -->
     <p class="input-group">
       <div class="input-group-btn">
