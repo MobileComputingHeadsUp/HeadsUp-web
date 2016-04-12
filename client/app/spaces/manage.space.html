@@ -16,7 +16,7 @@
         <div class = "row" ng-repeat="beacon in sm.currentSpace.beacons">
           <div class = "col s11">
             <label for="space-beacon">Beacon Identifier</label>
-            <input type="text" id="space-beacon"  placeholder="New space's beacon id" ng-model="beacon.identifier">
+            <input type="text" id="space-beacon"  placeholder="New space's beacon id" ng-model="beacon.identifier" required>
           </div>
           <div class = "col s1">
             <a class="btn-floating btn-large waves-effect waves-light red" ng-click="sm.deleteBeacon(beacon)"><i class="material-icons">close</i></a>
@@ -34,7 +34,7 @@
       This information will tailor your patrons experience to your Space. Choose wisely!
     </label>
 
-    <div ng-repeat="dropdown in sc.customDropDowns" class="row">
+    <div ng-repeat="dropdown in sm.currentSpace.requriedUserInfo.dropdown" class="row">
       <!-- Display the actual dropdown in form it would be shown to Users -->
       <div class="input-field col s11" ng-hide="dropdown.editable">
         <select class="browser-default">
@@ -43,22 +43,22 @@
         </select>
       </div>
       <!-- View to customize the Dropdown title and Options -->
-      <a ng-hide="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.setDropdownEditable(dropdown)"><i class="material-icons">mode_edit</i></a>        <!-- Form to edit the dropdown -->
+      <a ng-hide="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="sm.setDropdownEditable(dropdown)"><i class="material-icons">mode_edit</i></a>        <!-- Form to edit the dropdown -->
       <div class="col s11 input-field" ng-show="dropdown.editable">
         <input type="text" id="dd-title" ng-model="dropdown.label" placeholder="Enter a title for this dropdown">
         <label class="active" for="dd-title">Dropdown Title</label>
         <div class="input-field" ng-repeat="option in dropdown.optionStrings track by $index">
-          <input type="text"  id="UNIQUE{{$index}}" ng-model="option.value" placeholder="Fill in this drop down option">
+          <input type="text"  id="UNIQUE{{$index}}" ng-model="option" placeholder="Fill in this drop down option">
           <label class="active" for="UNIQUE{{$index}}">Option #{{$index + 1}}</label>
         </div>
-        <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.newDropDownOption(dropdown)"><i class="material-icons">add</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sm.newDropDownOption(dropdown)"><i class="material-icons">add</i></a>
       </div>
       <!-- Button to "finish editing" the dropdown -->
-      <a ng-show="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.saveDropdown(dropdown)"><i class="material-icons">done</i></a>
+      <a ng-show="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="sm.saveDropdown(dropdown)"><i class="material-icons">done</i></a>
     </div>
 
     <!-- End repeating the "custom dropwdowns" -->
-    <a id="dropDownButton" class="waves-effect waves-light btn deep-purple" ng-click="sc.newDropDown()">New Drop Down Option</a>
+    <a id="dropDownButton" class="waves-effect waves-light btn deep-purple" ng-click="sm.newDropDown()">New Drop Down Option</a>
     </p>
     <!-- Save the new space button: end of form -->
     <p class="input-group">
