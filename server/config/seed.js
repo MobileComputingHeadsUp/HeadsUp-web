@@ -40,6 +40,8 @@ Thing.find({}).remove()
     });
   });
 
+User.find({}).remove();
+
 //
 // User.find({}).remove()
 //   .then(() => {

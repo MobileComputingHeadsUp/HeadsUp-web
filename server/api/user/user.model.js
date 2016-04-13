@@ -26,7 +26,8 @@ var UserSchema = new Schema({
   spaceProfiles: [{
       spaceID: {type: Schema.Types.ObjectId, ref: 'Space'},
       requiredUserInfoVersion: Number,
-      data: {} // Any JSON data associated with this space
+      data: {}, // Any JSON data associated with this space
+      _id: false
   }],
   // Generic User data which could be of value to a space
   twitterHandle: String,
