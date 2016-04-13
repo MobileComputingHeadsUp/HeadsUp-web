@@ -22,6 +22,7 @@
       <label style="display: block; margin-bottom: 1.0rem">
           This information will tailor your patrons experience to your Space. Choose wisely!
       </label>
+      <!-- REPEAT CUSTOM DROPDOWNS -->
       <div ng-repeat="dropdown in sc.customDropDowns" class="row">
         <!-- Display the actual dropdown in form it would be shown to Users -->
         <div class="input-field col s11" ng-hide="dropdown.editable">
@@ -31,21 +32,111 @@
           </select>
         </div>
         <!-- View to customize the Dropdown title and Options -->
-        <a ng-hide="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.setDropdownEditable(dropdown)"><i class="material-icons">mode_edit</i></a>        <!-- Form to edit the dropdown -->
-        <div class="col s11 input-field" ng-show="dropdown.editable">
-          <input type="text" id="dd-title" ng-model="dropdown.label" placeholder="Enter a title for this dropdown">
+        <a ng-hide="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="dropdown.editable = true"><i class="material-icons">mode_edit</i></a>        <!-- Form to edit the dropdown -->
+        <div class="col s11" ng-show="dropdown.editable">
           <label class="active" for="dd-title">Dropdown Title</label>
+          <input type="text" id="dd-title" ng-model="dropdown.label" placeholder="Enter a title for this dropdown">
           <div class="input-field" ng-repeat="option in dropdown.optionStrings track by $index">
             <input type="text"  id="UNIQUE{{$index}}" ng-model="option.value" placeholder="Fill in this drop down option">
             <label class="active" for="UNIQUE{{$index}}">Option #{{$index + 1}}</label>
           </div>
-          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.newDropDownOption(dropdown)"><i class="material-icons">add</i></a>
+          <div class="row">
+            <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.newDropDownOption(dropdown)"><i class="material-icons">add</i></a>
+            <!-- Switch -->
+            <div class="switch" style="padding-top: 3%">
+              <label>
+                Match Users on this option?
+                <input type="checkbox" ng-model="dropdown.matchUsers">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
         </div>
         <!-- Button to "finish editing" the dropdown -->
-        <a ng-show="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.saveDropdown(dropdown)"><i class="material-icons">done</i></a>
+        <a ng-show="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="dropdown.editable = false"><i class="material-icons">done</i></a>
       </div>
-      <!-- End repeating the "custom dropwdowns" -->
-      <a id="dropDownButton" class="waves-effect waves-light btn deep-purple" ng-click="sc.newDropDown()">New Drop Down Option</a>
+
+      <!-- REPEAT CUSTOM CHECKBOXES -->
+      <!-- Display the actual checkbox in form it would be shown to Users -->
+      <div ng-repeat="check in sc.customCheckAlls" class="row">
+        <div ng-hide="check.editable" class="col s11">
+          <a  class="btn-floating btn-large waves-effect waves-light red right" ng-click="check.editable = true"><i class="material-icons">mode_edit</i></a>
+          <p>{{check.label}}</p>
+          <form action="#">
+            <p ng-repeat="option in check.optionStrings track by $index">
+              <input type="checkbox" id="UNIQUE{{$index}}" />
+              <label for="UNIQUE{{$index}}">{{option.value}}</label>
+            </p>
+          </form>
+        </div>
+      <!-- View to customize the Checkbox title and Options -->
+        <div class="col s11" ng-show="check.editable">
+          <label class="active" for="check-title">Check All That Apply Title</label>
+          <input type="text" id="check-title" ng-model="check.label" placeholder="Enter a title for this Checkbox Option">
+          <div class="input-field" ng-repeat="option in check.optionStrings track by $index">
+            <input type="text"  id="UNIQUE{{$index}}" ng-model="option.value" placeholder="Fill in this drop down option">
+            <label class="active" for="UNIQUE{{$index}}">Option #{{$index + 1}}</label>
+          </div>
+          <div class="row">
+            <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sc.newDropDownOption(check)"><i class="material-icons">add</i></a>
+            <!-- Switch -->
+            <div class="switch" style="padding-top: 3%">
+              <label>
+                Match Users on this option?
+                <input type="checkbox" ng-model="check.matchUsers">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Button to "finish editing" the check -->
+        <a ng-show="check.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="check.editable = false"><i class="material-icons">done</i></a>
+      </div>
+      <!-- END CUSTOM CHECKBOXES -->
+
+      <!-- CUSTOM FREE RESPONSES -->
+      <div ng-repeat="fr in sc.customFreeResponses track by $index" class="row">
+        <form class="col s12" ng-hide="fr.editable">
+          <div class="row">
+            <a  class="btn-floating btn-large waves-effect waves-light red right" ng-click="fr.editable = true"><i class="material-icons">mode_edit</i></a>
+            <div class="input-field col s11">
+              <textarea id="UNIQUE{{$index}}" class="materialize-textarea" length="{{fr.charLimit}}"></textarea>
+              <label for="UNIQUE{{$index}}">{{fr.label}}</label>
+            </div>
+          </div>
+        </form>
+        <!-- View to customize the Free Response Title and Char Limit -->
+        <div class="col s11" ng-show="fr.editable">
+          <label class="active" for="fr-title">Free Response Title</label>
+          <input type="text" id="fr-title" ng-model="fr.label" placeholder="Enter a title for this Free Response">
+          <form action="#">
+            <strong><p>Character Limit</p></strong>
+            <p class="range-field">
+              <input type="range" id="test5" min="5" max="300" ng-model="fr.charLimit" />
+            </p>
+          </form>
+          <div class="row">
+            <!-- Switch -->
+            <div class="switch" style="padding-top: 3%">
+              <label>
+                Match Users on this option?
+                <input type="checkbox" ng-model="fr.matchUsers">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Button to "finish editing" the fr -->
+        <a ng-show="fr.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="fr.editable = false"><i class="material-icons">done</i></a>
+      </div>
+
+
+      <!-- End repeating the form stuff-->
+      <div class="row">
+        <a class="waves-effect waves-light btn deep-purple col s3 new-button" ng-click="sc.newDropDown()">New Drop Down Option</a>
+        <a class="waves-effect waves-light btn deep-purple col s3 new-button" ng-click="sc.newCheckAll()">New Check All That Apply Option</a>
+        <a class="waves-effect waves-light btn deep-purple col s3 new-button" ng-click="sc.newFreeResponse()">New Free Response</a>
+      </div>
     </p>
     <!-- Save the new space button: end of form -->
     <p class="input-group">

@@ -20,12 +20,13 @@ var SpaceSchema = new Schema({
     }],
     checkAllThatApply:[{
       label: String,
-      options: [String],
+      optionStrings: [String],
       matchUsers: Boolean
     }],
     freeResponse: [{
       label: String,
-      charLimit: Number
+      charLimit: Number,
+      matchUsers: Boolean
     }],
     requiredUserInfoVersion: {type: Number, default: 0}
   },
