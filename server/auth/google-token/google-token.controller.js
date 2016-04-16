@@ -62,7 +62,8 @@ export function verifyToken(req, res) {
             email: data.email,
             name: data.name,
             given_name: data.given_name,
-            family_name: data.family_name
+            family_name: data.family_name,
+            picture: data.picture
           }
         });
         console.log("BEFORE SAVING");

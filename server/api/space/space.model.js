@@ -9,6 +9,13 @@ var SpaceSchema = new Schema({
   description: String,
   spaceOwner: {type: Schema.Types.ObjectId, ref: 'User'},
   usersInSpace: [{type: Schema.Types.ObjectId, ref: 'User'}],
+  usersInSpace2: [{
+    user: {type: Schema.Types.ObjectId, ref: 'User'},
+    matches: [{
+      user: {type: Schema.Types.ObjectId, ref: 'User'},
+      attributes: [{}]
+    }]
+  }, {timestamps: true}],
   beacons: [Beacon],
   ads: [{type: Schema.Types.ObjectId, ref: 'Ad'}],
   sensors: [{type: Schema.Types.ObjectId, ref: 'Sensor'}],
