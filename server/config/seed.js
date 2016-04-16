@@ -6,6 +6,7 @@
 'use strict';
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
+import Beacon from '../api/beacon/beacon.model';
 
 Thing.find({}).remove()
   .then(() => {
@@ -38,7 +39,10 @@ Thing.find({}).remove()
              'and openshift subgenerators'
     });
   });
-// 
+
+User.find({}).remove();
+
+//
 // User.find({}).remove()
 //   .then(() => {
 //     User.create({

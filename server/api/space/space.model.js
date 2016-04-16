@@ -12,7 +12,7 @@ var SpaceSchema = new Schema({
   beacons: [Beacon],
   ads: [{type: Schema.Types.ObjectId, ref: 'Ad'}],
   sensors: [{type: Schema.Types.ObjectId, ref: 'Sensor'}],
-  requriedUserInfo: { // this will be versioned.
+  requiredUserInfo: { // this will be versioned.
     dropdown: [{
       label: String,
       optionStrings: [String],
@@ -20,12 +20,13 @@ var SpaceSchema = new Schema({
     }],
     checkAllThatApply:[{
       label: String,
-      options: [String],
+      optionStrings: [String],
       matchUsers: Boolean
     }],
     freeResponse: [{
       label: String,
-      charLimit: Number
+      charLimit: Number,
+      matchUsers: Boolean
     }],
     requiredUserInfoVersion: {type: Number, default: 0}
   },

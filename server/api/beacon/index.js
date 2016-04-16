@@ -7,7 +7,7 @@ import * as auth from '../../auth/auth.service';
 
 var router = express.Router();
 
-router.post('/:identifier', controller.attatchUserFromGoogleID, controller.hitBeacon);
+router.post('/hit_beacon', controller.attatchUserFromGoogleID, controller.hitBeacon);
 router.get('/', controller.testResponse);
 
 module.exports = router;
