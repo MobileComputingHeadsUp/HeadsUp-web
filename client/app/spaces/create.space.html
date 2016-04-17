@@ -129,45 +129,116 @@
         <!-- Button to "finish editing" the fr -->
         <a ng-show="fr.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="fr.editable = false"><i class="material-icons">done</i></a>
       </div>
+      <!--Sensor Select -->
+      <span>Click to Select a Sensor</span>
+      <div class="row" ng-repeat="sensors in sc.lightSensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addLight">
+        
+        <div class="col s5 m5 l5" ng-repeat="sensor in [$index, $index +1]" ng-if="sc.lightSensors[sensor] != null">
+          <p ng-hide="sc.lightSensors[sensor].editable"> {{sc.lightSensors[sensor].name}}: {{sc.lightSensors[sensor].model}} </p>
+          <div class="thumbnail" ng-hide="sc.lightSensors[sensor].editable">
+            <img ng-hide="sc.lightSensors[sensor].editable" src="{{sc.lightSensors[sensor].imgURL}}" class="img-responsive" width="100px" height="100px" ng-click="sc.lightSensors[sensor].editable = true"/>
+            <div class="number-chosen">
+              <p style="font-size: 15px;">{{sc.lightSensors[sensor].number}}</p>
+            </div>
+          </div>
+          <a class="waves-effect waves-light btn red new-button col s4" ng-click="sc.lightSensors[sensor].editable = false; sc.lightSensors[sensor].number = 0;" ng-show="sc.lightSensors[sensor].editable">Cancel</a>
+          <a class="waves-effect waves-light btn green new-button col s4" ng-click="sc.lightSensors[sensor].editable = false; sc.lightSensors[sensor].selected = true;" ng-show="sc.lightSensors[sensor].editable">Ok</a>
+          <form ng-show="sc.lightSensors[sensor].editable" action="#">
+            <strong><p>Number of {{sc.lightSensors[sensor].name}}s</p></strong>
+            <p class="range-field">
+              <input type="range" id="test5" min="1" max="50" ng-model="sc.lightSensors[sensor].number" />
+            </p>
+          </form>
 
+        </div>
+      </div>
+      <div class="row" ng-repeat="sensors in sc.pressureSensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addPress">
+        
+        <div class="col s5 m5 l5" ng-repeat="sensor in [$index, $index +1]" ng-if="sc.pressureSensors[sensor] != null">
+          <p ng-hide="sc.pressureSensors[sensor].editable"> {{sc.pressureSensors[sensor].name}}: {{sc.pressureSensors[sensor].model}} </p>
+          <div class="thumbnail" ng-hide="sc.pressureSensors[sensor].editable">
+            <img ng-hide="sc.pressureSensors[sensor].editable" src="{{sc.pressureSensors[sensor].imgURL}}" class="img-responsive" width="100px" height="100px" ng-click="sc.pressureSensors[sensor].editable = true"/>
+            <div class="number-chosen">
+              <p style="font-size: 15px;">{{sc.pressureSensors[sensor].number}}</p>
+            </div>
+          </div>
+          <a class="waves-effect waves-light btn red new-button col s4" ng-click="sc.pressureSensors[sensor].editable = false; sc.pressureSensors[sensor].number = 0;" ng-show="sc.pressureSensors[sensor].editable">Cancel</a>
+          <a class="waves-effect waves-light btn green new-button col s4" ng-click="sc.pressureSensors[sensor].editable = false; sc.pressureSensors[sensor].selected = true;" ng-show="sc.pressureSensors[sensor].editable">Ok</a>
+          <form ng-show="sc.pressureSensors[sensor].editable" action="#">
+            <strong><p>Number of {{sc.pressureSensors[sensor].name}}s</p></strong>
+            <p class="range-field">
+              <input type="range" id="test5" min="1" max="50" ng-model="sc.pressureSensors[sensor].number" />
+            </p>
+          </form>
+
+        </div>
+      </div>
+      <div class="row" ng-repeat="sensors in sc.proximitySensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addProx">
+        
+        <div class="col s5 m5 l5" ng-repeat="sensor in [$index, $index +1]" ng-if="sc.proximitySensors[sensor] != null">
+          <p ng-hide="sc.proximitySensors[sensor].editable"> {{sc.proximitySensors[sensor].name}}: {{sc.proximitySensors[sensor].model}} </p>
+          <div class="thumbnail" ng-hide="sc.proximitySensors[sensor].editable">
+            <img ng-hide="sc.proximitySensors[sensor].editable" src="{{sc.proximitySensors[sensor].imgURL}}" class="img-responsive" width="100px" height="100px" ng-click="sc.proximitySensors[sensor].editable = true"/>
+            <div class="number-chosen">
+              <p style="font-size: 15px;">{{sc.proximitySensors[sensor].number}}</p>
+            </div>
+          </div>
+          <a class="waves-effect waves-light btn red new-button col s4" ng-click="sc.proximitySensors[sensor].editable = false; sc.proximitySensors[sensor].number = 0;" ng-show="sc.proximitySensors[sensor].editable">Remove</a>
+          <a class="waves-effect waves-light btn green new-button col s4" ng-click="sc.proximitySensors[sensor].editable = false; sc.proximitySensors[sensor].selected = true;" ng-show="sc.proximitySensors[sensor].editable">Ok</a>
+          <form ng-show="sc.proximitySensors[sensor].editable" action="#">
+            <strong><p>Number of {{sc.proximitySensors[sensor].name}}s</p></strong>
+            <p class="range-field">
+              <input type="range" id="test5" min="1" max="50" ng-model="sc.proximitySensors[sensor].number" />
+            </p>
+          </form>
+
+        </div>
+      </div>
+      
+      <div class="row" ng-repeat="sensors in sc.temperatureSensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addTemp">
+        
+        <div class="col s5 m5 l5" ng-repeat="sensor in [$index, $index +1]" ng-if="sc.temperatureSensors[sensor] != null">
+          <p ng-hide="sc.temperatureSensors[sensor].editable"> {{sc.temperatureSensors[sensor].name}}: {{sc.temperatureSensors[sensor].model}} </p>
+          <div class="thumbnail" ng-hide="sc.temperatureSensors[sensor].editable">
+            <img ng-hide="sc.temperatureSensors[sensor].editable" src="{{sc.temperatureSensors[sensor].imgURL}}" class="img-responsive" width="100px" height="100px" ng-click="sc.temperatureSensors[sensor].editable = true"/>
+            <div class="number-chosen">
+              <p style="font-size: 15px;">{{sc.temperatureSensors[sensor].number}}</p>
+            </div>
+          </div>
+          <a class="waves-effect waves-light btn red new-button col s4" ng-click="sc.temperatureSensors[sensor].editable = false; sc.temperatureSensors[sensor].number = 0;" ng-show="sc.temperatureSensors[sensor].editable">Cancel</a>
+          <a class="waves-effect waves-light btn green new-button col s4" ng-click="sc.temperatureSensors[sensor].editable = false; sc.temperatureSensors[sensor].selected = true;" ng-show="sc.temperatureSensors[sensor].editable">Ok</a>
+          <form ng-show="sc.temperatureSensors[sensor].editable" action="#">
+            <strong><p>Number of {{sc.temperatureSensors[sensor].name}}s</p></strong>
+            <p class="range-field">
+              <input type="range" id="test5" min="1" max="50" ng-model="sc.temperatureSensors[sensor].number" />
+            </p>
+          </form>
+
+        </div>
+      </div>
 
       <!-- End repeating the form stuff-->
       <div class="row">
         <a class="waves-effect waves-light btn deep-purple col s3 new-button" ng-click="sc.newDropDown()">New Drop Down Option</a>
-        <a class="waves-effect waves-light btn deep-purple col s3 new-button" ng-click="sc.newCheckAll()">New Check All That Apply Option</a>
+        <a class="waves-effect waves-light btn deep-purple col s3 new-button smaller-btn-text" ng-click="sc.newCheckAll()">New Check All That Apply Option</a>
         <a class="waves-effect waves-light btn deep-purple col s3 new-button" ng-click="sc.newFreeResponse()">New Free Response</a>
       </div>
+      <!-- Buttons for displaying sensors -->
+      <div class ="row">
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addLight = true;" ng-hide="sc.addLight">Show Light Sensors</a> 
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addLight = false;" ng-show="sc.addLight">Hide Light Sensors</a>
+
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addPress = true;" ng-hide="sc.addPress">Show Pressure Sensors</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addPress = false;" ng-show="sc.addPress">Hide Pressure Sensors</a>
+
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addProx = true; " ng-hide="sc.addProx">Show Proximity Sensors</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addProx = false; " ng-show="sc.addProx">Hide Proximity Sensors</a>
+
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addTemp = true;" ng-hide="sc.addTemp">Show Temperature Sensors</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addTemp = false;" ng-show="sc.addTemp">Hide Temperature Sensors</a>
+      </div>
     </p>
-    <!--Sensor Select -->
-    <p class="input-group">
-      <h5>Please Select the Sensors You Are Using In Your Space</h5>
-      <label style="display: block; margin-bottom: 1.0rem">
-        This information is not required to create your space
-      </label>
-      <h6>
-        Temperature Sensors
-      </h6>
-      <div class="row" ng-repeat="sensor in sc.temperatureSensors">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 image-wrapper">
-          <p> {{sensor.name}}: {{sensor.model}} </p>
-          <img src="{{sensor.imgURL}}" class="img-responsive" width="100px" height="100px"/>
-          <a>Amount: {{sensor.number}}</a>
-          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="if(sensor.number > 0){sensor.number = sensor.number - 1}">-</a>
-          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sensor.number = sensor.number + 1">+</a>
-
-        </div>
-      </div>
-      <h6>Light Sensors</h6>
-      <div class="row" ng-repeat="sensor in sc.lightSensors">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 image-wrapper">
-          <p> {{sensor.name}}: {{sensor.model}} </p>
-          <img src="{{sensor.imgURL}}" class="img-responsive" width="100px" height="100px"/>
-          <a>Amount: {{sensor.number}}</a>
-          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="if(sensor.number > 0){sensor.number = sensor.number - 1}">-</a>
-          <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sensor.number = sensor.number + 1">+</a>
-
-        </div>
-      </div>
+    
     <!-- Save the new space button: end of form -->
     <p class="input-group">
       <div class="input-group-btn">

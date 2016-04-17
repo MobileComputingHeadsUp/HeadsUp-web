@@ -10,33 +10,27 @@ class SpaceCreateController {
     // Init space schema form customization
     this.customDropDowns = [];
 
-    this.temperatureSensors = [{
-        name: 'Analog Temperature Sensor',
-        model: 'TMP36',
-        number: 0,
-        imgURL: 'assets/images/SensorImages/tmp36.jpg'
-      },
-      {
-        name: 'Digital Temperature Sensor',
-        model: 'TMP107BID',
-        number: 0,
-        imgURL: 'assets/images/SensorImages/tmp107.jpg'
-      }];
-    this.lightSensors = [{
-      name: 'Digital Ambient Light Sensor',
-      model: 'SFH 7771',
-      number: 0,
-      imgURL: 'assets/images/SensorImages/SFH_7771_DSL.jpg'
-      },
-      {
-      name: 'Digital Ambient Light Sensor',
-      model: 'Si1133-AA00-GMR',
-      number: 0,
-      imgURL: 'assets/images/SensorImages/QFN_10_Clear_SPL.jpg'
-      }];
+    $http.get('../assets/json/mockSensors.json')
+      .then(response => {
+        this.temperatureSensors = response.data.temperature;
+        this.temperatureEditable = false;
+        this.proximitySensors = response.data.proximity;
+        this.proximityEditable = false;
+        this.pressureSensors = response.data.pressure;
+        this.pressureEditable = false;
+        this.lightSensors = response.data.light;
+        this.lightEditable = false;
+      });
+
+
+    this.addTemp = false;
+    this.addLight = false;
+    this.addPress = false;
+    this.addProx = false;
 
     this.customCheckAlls = [];
     this.customFreeResponses = [];
+    this.sensors = [];
 
   }
 
@@ -50,19 +44,26 @@ class SpaceCreateController {
       // this is necessary.
       this.cleanUpOptionsArray(this.customDropDowns);
       this.cleanUpOptionsArray(this.customCheckAlls);
-      console.log('cleaned up the options array ');
-      console.log(this.customDropDowns);
-      console.log(this.customCheckAlls);
-      console.log(this.customFreeResponses);
 
+      //pulling sensors from each sensor type aray to get pushed in as a single array of sensors
+      //maybe we should seperate sensor types on the space schema?
+      var sensorArray = [];
+      for(var i in this.temperatureSensors)
+        sensorArray.push(this.temperatureSensors[i]);
+      for(var i in this.proximitySensors)
+        sensorArray.push(this.proximitySensors[i]);
+      for(var i in this.pressureSensors)
+        sensorArray.push(this.pressureSensors[i]);
+      for(var i in this.lightSensors)
+        sensorArray.push(this.lightSensors[i]);
       // Create the space object
       var newSpace = {
         name: this.newSpaceName,
         description: description,
         identifier: this.newSpaceBeaconID,
 
-        sensors: [this.temperatureSensors,this.lightSensors],
-        
+        sensors: sensorArray,
+
         requiredUserInfo:{
           dropdown: this.customDropDowns,
           checkAllThatApply: this.customCheckAlls,
@@ -142,6 +143,7 @@ class SpaceCreateController {
     this.customFreeResponses.push(freeResponse);
   }
 
+
   //// HELPERS ////
 
   // Function utilized to transform the drop down options array
@@ -162,6 +164,7 @@ class SpaceCreateController {
       // set formElements to our new, fixed elements array
       formElements = elements;
   }
+
   // end class
 }
 
