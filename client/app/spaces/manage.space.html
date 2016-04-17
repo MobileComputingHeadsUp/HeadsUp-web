@@ -48,7 +48,7 @@
         <input type="text" id="dd-title" ng-model="dropdown.label" placeholder="Enter a title for this dropdown">
         <label class="active" for="dd-title">Dropdown Title</label>
         <div class="input-field" ng-repeat="option in dropdown.optionStrings track by $index">
-          <input type="text"  id="UNIQUE{{$index}}" ng-model="option" placeholder="Fill in this drop down option">
+          <input type="text"  id="UNIQUE{{$index}}" ng-model="option.value" placeholder="Fill in this drop down option">
           <label class="active" for="UNIQUE{{$index}}">Option #{{$index + 1}}</label>
         </div>
         <a class="btn-floating btn-large waves-effect waves-light red right" ng-click="sm.newDropDownOption(dropdown)"><i class="material-icons">add</i></a>

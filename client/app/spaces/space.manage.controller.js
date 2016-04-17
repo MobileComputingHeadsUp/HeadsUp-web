@@ -16,6 +16,13 @@ class SpaceManageController {
     //this.testNum = 123;
     //console.log(this.currentSpace.beacons);
     console.log(this.currentSpace);
+    for(var x=0; x<this.currentSpace.requriedUserInfo.dropdown.length; x++){
+      var currentDropdownOptions = [];
+      for(var y = 0; y<this.currentSpace.requriedUserInfo.dropdown[x].optionStrings.length; y++){
+        currentDropdownOptions.push({value: this.currentSpace.requriedUserInfo.dropdown[x].optionStrings[y]});
+      }
+      this.currentSpace.requriedUserInfo.dropdown[x].optionStrings = currentDropdownOptions;
+    }
   }
 
   addBeacon(){
@@ -34,12 +41,12 @@ class SpaceManageController {
 
   }
   saveSpace() {
-    this.cleanUpOptionsArray();
+    console.log(this.currentSpace);
     if (this.currentSpace) {
       // Save it
       this.APIClient.updateSpace(this.currentSpace)
         .then((response) => {
-        console.log(response);
+        //console.log(response);
         //this.currentSpace = response;
         // Show toast
         Materialize.toast('Your Space has been updated!', 4000);
@@ -59,7 +66,7 @@ class SpaceManageController {
       number: number,
       label: 'My Custom Dropdown',
       editable: false,
-      optionStrings: ['default option 1', 'default option 2'],
+      optionStrings: [{value: 'default option 1'},{value: 'default option 2'}],
       // TODO: add in Angular Matieral in order to use a nice material switch to
       // toggle this. Materialize doesnt have the switch :(
       matchUsers: true
@@ -76,7 +83,8 @@ class SpaceManageController {
   }
   newDropDownOption(dropdown) {
     var count = dropdown.optionStrings.length+1;
-    dropdown.optionStrings.push('default option ' + count);
+    dropdown.optionStrings.push({value: 'default option ' + count});
+    console.log(this.currentSpace.requriedUserInfo);
   }
   // Function utilized to transform the drop down options array
   // In order to display the options in HTML via Angular's ng-repeat,
