@@ -2,6 +2,7 @@
 
 import mongoose from 'mongoose';
 import Beacon from '../beacon/beacon.model';
+import Sensor from '../sensor/sensor.model';
 var Schema = mongoose.Schema;
 
 var SpaceSchema = new Schema({
@@ -18,7 +19,7 @@ var SpaceSchema = new Schema({
   }, {timestamps: true}],
   beacons: [Beacon],
   ads: [{type: Schema.Types.ObjectId, ref: 'Ad'}],
-  sensors: [{type: Schema.Types.ObjectId, ref: 'Sensor'}],
+  sensors: [Sensor],
   requiredUserInfo: { // this will be versioned.
     dropdown: [{
       label: String,

@@ -50,9 +50,15 @@ export function create(req, res) {
         name: 'A default beacon',
         space: space._id
     }
+    const sensors = req.body.sensors;
+
 
     // Push the beacon subdoc
     space.beacons.push(beacon);
+
+    //push the sensors subdoc
+    for(var i in sensors)
+      space.sensors.push(sensors[i]);
 
     // Save the space to mongoDB
     return space.save()

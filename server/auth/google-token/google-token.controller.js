@@ -27,7 +27,7 @@ export function verifyToken(req, res) {
     var data = JSON.parse(body);
 
     // Make sure that the request came from our app! We're not gettin hacked today!
-    if(data.azp.valueOf() != config.google.androidClientID.valueOf()){
+    if(data.azp.valueOf() !== config.google.androidClientID.valueOf()){
       // The request did not come from our app.
       return res.status(403).end();
     }

@@ -9,8 +9,29 @@ class SpaceCreateController {
 
     // Init space schema form customization
     this.customDropDowns = [];
+
+    $http.get('../assets/json/mockSensors.json')
+      .then(response => {
+        this.temperatureSensors = response.data.temperature;
+        this.temperatureEditable = false;
+        this.proximitySensors = response.data.proximity;
+        this.proximityEditable = false;
+        this.pressureSensors = response.data.pressure;
+        this.pressureEditable = false;
+        this.lightSensors = response.data.light;
+        this.lightEditable = false;
+      });
+
+
+    this.addTemp = false;
+    this.addLight = false;
+    this.addPress = false;
+    this.addProx = false;
+
     this.customCheckAlls = [];
     this.customFreeResponses = [];
+    this.sensors = [];
+
   }
 
    // Function to save this created space to the DB
@@ -23,16 +44,26 @@ class SpaceCreateController {
       // this is necessary.
       this.cleanUpOptionsArray(this.customDropDowns);
       this.cleanUpOptionsArray(this.customCheckAlls);
-      console.log('cleaned up the options array ');
-      console.log(this.customDropDowns);
-      console.log(this.customCheckAlls);
-      console.log(this.customFreeResponses);
 
+      //pulling sensors from each sensor type aray to get pushed in as a single array of sensors
+      //maybe we should seperate sensor types on the space schema?
+      var sensorArray = [];
+      for(var i in this.temperatureSensors)
+        sensorArray.push(this.temperatureSensors[i]);
+      for(var i in this.proximitySensors)
+        sensorArray.push(this.proximitySensors[i]);
+      for(var i in this.pressureSensors)
+        sensorArray.push(this.pressureSensors[i]);
+      for(var i in this.lightSensors)
+        sensorArray.push(this.lightSensors[i]);
       // Create the space object
       var newSpace = {
         name: this.newSpaceName,
         description: description,
         identifier: this.newSpaceBeaconID,
+
+        sensors: sensorArray,
+
         requiredUserInfo:{
           dropdown: this.customDropDowns,
           checkAllThatApply: this.customCheckAlls,
@@ -112,6 +143,7 @@ class SpaceCreateController {
     this.customFreeResponses.push(freeResponse);
   }
 
+
   //// HELPERS ////
 
   // Function utilized to transform the drop down options array
@@ -132,6 +164,7 @@ class SpaceCreateController {
       // set formElements to our new, fixed elements array
       formElements = elements;
   }
+
   // end class
 }
 
