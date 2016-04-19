@@ -1,6 +1,7 @@
 'use strict';
 
 import mongoose from 'mongoose';
+import Ad from '../ad/ad.model';
 var Schema = mongoose.Schema;
 
 var BeaconSchema = new Schema({
@@ -11,7 +12,7 @@ var BeaconSchema = new Schema({
     queueName: String
   },
   vicinityAds: {
-    ads: [{type: Schema.Types.ObjectId, unique: true, ref: 'Ad'}]
+    ads: [Ad]
   },
   vicinitySensors: {
     sensors: [{type: Schema.Types.ObjectId, ref: 'Sensor'}]
