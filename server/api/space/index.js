@@ -2,6 +2,7 @@
 
 var express = require('express');
 var controller = require('./space.controller');
+var middleware = require('../utilities/middlewares.js');
 import * as auth from '../../auth/auth.service';
 
 
@@ -14,5 +15,13 @@ router.post('/', auth.isAuthenticated(), controller.create);
 router.put('/:id', auth.isAuthenticated(), controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
+
+// Space dash feed
+router.post('/dash', middleware.attatchUserFromGoogleID, controller.feed);
+
+// Debug stuff
+router.get('/clear/users/:id', controller.clearUsersFromSpace);
+router.get('/clear/matches/:id', controller.clearMatchesFromSpace);
+
 
 module.exports = router;

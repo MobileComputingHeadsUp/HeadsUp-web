@@ -14,6 +14,7 @@ import Space from '../space/space.model'
 import User from '../user/user.model'
 import async from 'async';
 var ResponseHandler = require('../utilities/response.handlers.js');
+var SpaceController = require('../space/space.controller');
 
 
 
@@ -42,7 +43,7 @@ export function userInfoRequired(user, space) {
 }
 
 // Function called when endpoint of the following format is hit:
-// Endpoint: '/api/beacons/:identifier'
+// Endpoint: '/api/beacons/hit_beacon/'
 // This is what is called when you interact with a beacon via the mobile app.
 // Currently, this function only has the capability to facilitate interactions
 // with a beacon of type "entry".
@@ -61,7 +62,7 @@ export function hitBeacon(req, res) {
   return spaceByBeaconIdentifier(identifier)
     .then(space => {
 
-      if (space == undefined) {
+      if (space === undefined) {
         return {
           msg: "Could not find space.",
           action: "NONE"
@@ -105,20 +106,29 @@ export function hitBeacon(req, res) {
             };
           }
         }
-        // Else, add the user to the space,
-        // and respond with the Space profile they need to create.
+        // Respond with the Space profile they need to create.
+        // or, if none needed, add the user to the space and respond with
+        // SPACE_DASH action
         else {
-          space.usersInSpace.push(user._id);
-          return space.save()
-            .then(saved => {
-              let requiredAction = userInfoNeeded ? "REQUIRED_USER_INFO" : "SPACE_DASH";
-              return {
-                data: saved.requiredUserInfo,
-                spaceID: saved._id,
-                action: requiredAction
-              }
-            })
-            .catch(ResponseHandler.handleError(res));
+          const requiredAction = userInfoNeeded ? "REQUIRED_USER_INFO" : "SPACE_DASH";
+          if (!userInfoNeeded) {
+            return SpaceController.addUserToSpace(user._id, space._id)
+              .then(updated => {
+                return {
+                  spaceID: saved._id,
+                  action: requiredAction
+                }
+              })
+              .catch(ResponseHandler.handleError(res));
+          }
+          else {
+            // Otherwise, the user needs to create a space profile
+            return {
+              data: space.requiredUserInfo,
+              spaceID: space._id,
+              action: requiredAction
+            }
+          }
         }
       }
       // Else, this is not an entry beacon
