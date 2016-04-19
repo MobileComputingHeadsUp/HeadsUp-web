@@ -15,7 +15,10 @@ class SpaceManageController {
     this.$stateParams.id = this.currentSpace._id;
     //this.testNum = 123;
     //console.log(this.currentSpace.beacons);
+
     console.log(this.currentSpace);
+
+    /*  Fix for optionStrings values being weird
     for(var x=0; x<this.currentSpace.requriedUserInfo.dropdown.length; x++){
       var currentDropdownOptions = [];
       for(var y = 0; y<this.currentSpace.requriedUserInfo.dropdown[x].optionStrings.length; y++){
@@ -23,6 +26,7 @@ class SpaceManageController {
       }
       this.currentSpace.requriedUserInfo.dropdown[x].optionStrings = currentDropdownOptions;
     }
+    */
   }
 
   addBeacon(){
@@ -46,7 +50,8 @@ class SpaceManageController {
       // Save it
       this.APIClient.updateSpace(this.currentSpace)
         .then((response) => {
-        //console.log(response);
+
+        console.log(this.currentSpace);
         //this.currentSpace = response;
         // Show toast
         Materialize.toast('Your Space has been updated!', 4000);
