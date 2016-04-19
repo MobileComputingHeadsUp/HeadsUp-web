@@ -3,6 +3,7 @@
 import mongoose from 'mongoose';
 import Beacon from '../beacon/beacon.model';
 import Ad from '../ad/ad.model';
+import Sensor from '../sensor/sensor.model';
 var Schema = mongoose.Schema;
 
 var SpaceSchema = new Schema({
@@ -31,7 +32,7 @@ var SpaceSchema = new Schema({
     }],
   beacons: [Beacon],
   ads: [Ad],
-  sensors: [{type: Schema.Types.ObjectId, ref: 'Sensor'}],
+  sensors: [Sensor],
   // Data the space requires about its users.
   requiredUserInfo: { // this will be versioned.
     dropdown: [{
