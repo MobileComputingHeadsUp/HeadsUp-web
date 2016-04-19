@@ -84,10 +84,8 @@ export function hitBeacon(req, res) {
         let userInfoNeeded = userInfoRequired(user, space);
 
         // Check if this user is in the spaces, returns a boolean
-        const inSpace = space.usersInSpace.indexOf(user._id) > -1;
-
-        // For testing I want to always get the space stuff
-        // const inSpace = false;
+        const users = space.usersInSpace;
+        const inSpace = _.some(users, {"_id": user._id});
 
         // If user is in space already, just return it...
         // dont need to do anything else, since this is an entry beacon
