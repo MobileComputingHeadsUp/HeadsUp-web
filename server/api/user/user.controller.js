@@ -5,6 +5,8 @@ import passport from 'passport';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 const ResponseHandler = require('../utilities/response.handlers.js');
+var SpaceController = require('../space/space.controller');
+
 
 
 function validationError(res, statusCode) {
@@ -118,40 +120,62 @@ export function me(req, res, next) {
 }
 
 // Add a new space profile
-export function addSpaceProfile(req, res){
-    // console.log(req.body.profile
-    let spaceProfile = JSON.parse(req.body.profile);
+export function addSpaceProfile(req, res) {
+    // Get relevant data from the request
+    // TODO: why the eff are you sending the space profile as a string brad?
+    // Serialize that shit into JSON on the client side plz
+    let spaceProfile = {}
+    if (typeof req.body.profile === "string") {
+      spaceProfile = JSON.parse(req.body.profile);
+    } else {
+      spaceProfile = req.body.profile;
+    }
+    // Init variables we'll be using
+    const spaceID = spaceProfile.spaceID;
+    const user = req.user;
+    const profiles = user.spaceProfiles;
 
-    // Find the user.
-    User.findOne({'google.id': req.body.google_id}).exec()
-      .then(user => {
-        if(!user){
-          return res.status(401).end();
-        }
-        // Loook to see if this space Profile already EXISTS
-        let profileExists = false;
-        user.spaceProfiles.forEach(profile => {
-          if(profile.spaceID == spaceProfile.spaceID){
-            profileExists = true;
 
-            // Update this Profile
-            profile.requiredUserInfoVersion = spaceProfile.requiredUserInfoVersion;
-            profile.data = spaceProfile.data;
-            user.save()
-              .then(updated =>{
-                return res.status(200).json(updated);
-              });
-          }
-        });
-        // If the profile doesnt exist! Create it!
-        if(!profileExists){
-          user.spaceProfiles.push(spaceProfile);
-          user.save()
-            .then(updated =>{
-              return res.status(200).json(updated);
-            });
-        }
+    // Loook to see if this space Profile already EXISTS
+    // Array.find() returns the object or returns undefined
+    const existingProfile = profiles.find(profile => String(profile.spaceID) === spaceID);
+    if (existingProfile) {
+      console.log("Updating an exisiting space profile");
+      // Update this Profile
+      existingProfile.requiredUserInfoVersion = spaceProfile.requiredUserInfoVersion;
+      existingProfile.data = spaceProfile.data;
+    }
+    else {
+      // If the profile doesnt exist, Create it!
+      console.log("Creating a new space profile");
+      user.spaceProfiles.push(spaceProfile);
+    }
+    // Save the updated user obj with either the new space profile,
+    // Or the updated space profile.
+    user.save()
+      .then(updated => {
+        // Add user to the space.
+        SpaceController.addUserToSpace(user.id, spaceID);
+        return res.status(200).json(updated);
       });
+
+}
+
+// Clear all of a users space profiles!
+export function clearSpaceProfiles(req, res) {
+  return User.findById(req.params.id).exec()
+    .then(ResponseHandler.handleEntityNotFound(res))
+    .then(user => {
+      // Clear users in space
+      user.spaceProfiles = [];
+      return user.save()
+        .then(updated => {
+          console.log("Cleared all space profiles for user: " + updated.name);
+          return updated;
+        });
+    })
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
 }
 
 /**
