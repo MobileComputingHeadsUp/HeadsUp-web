@@ -5,31 +5,35 @@
 class SpaceManageController {
 
   constructor($http, APIClient, $stateParams) {
+    // Init apiclient
     this.APIClient = APIClient;
-    // Get the current space
+
+    // Get the current space id from state params
     this.$stateParams = $stateParams;
-    this.currentSpace = this.$stateParams.space;
-    //console.log('THE CURRENT SPACE IS: ');
-    //console.log(this.currentSpace);
-    //console.log(this.currentSpace.type);
-    this.$stateParams.id = this.currentSpace._id;
-    //this.testNum = 123;
-    //console.log(this.currentSpace.beacons);
+    const currentSpaceId = this.$stateParams.id;
 
-    console.log(this.currentSpace);
+    this.currentSpace = {};
+    // Load the space from server:
+    this.findOneSpace(currentSpaceId)
+      .then(space => {
+         this.currentSpace = space;
+         console.log(this.currentSpace);
+       })
+      .catch(error => {
+        Materialize.toast('Shit, an error', 4000);
+        console.log(error);
+      });
 
-    /*  Fix for optionStrings values being weird
-    for(var x=0; x<this.currentSpace.requriedUserInfo.dropdown.length; x++){
-      var currentDropdownOptions = [];
-      for(var y = 0; y<this.currentSpace.requriedUserInfo.dropdown[x].optionStrings.length; y++){
-        currentDropdownOptions.push({value: this.currentSpace.requriedUserInfo.dropdown[x].optionStrings[y]});
-      }
-      this.currentSpace.requriedUserInfo.dropdown[x].optionStrings = currentDropdownOptions;
-    }
-    */
+    // Init empty arrays of announcemnts and ads
+    this.announcments = [];
+    this.ads = [];
   }
 
-  addBeacon(){
+  findOneSpace(id) {
+    return this.APIClient.getASpace(id);
+  }
+
+  addBeacon() {
     var newBeacon = {
       identifier: '',
       name: 'new beacon'
@@ -37,7 +41,7 @@ class SpaceManageController {
     this.currentSpace.beacons.push(newBeacon);
     console.log(this.currentSpace.beacons);
   }
-  deleteBeacon(beacon){
+  deleteBeacon(beacon) {
     //console.log("test");
     if(this.currentSpace.beacons.indexOf(beacon) !== -1){
       this.currentSpace.beacons.splice(this.currentSpace.beacons.indexOf(beacon), 1);
@@ -48,11 +52,16 @@ class SpaceManageController {
     console.log(this.currentSpace);
     if (this.currentSpace) {
       // Save it
+      this.currentSpace.announcments = this.announcments;
+      this.currentSpace.ads = this.ads;
       this.APIClient.updateSpace(this.currentSpace)
         .then((response) => {
+        this.currentSpace = response;
 
-        console.log(this.currentSpace);
-        //this.currentSpace = response;
+        // Clear Stuff
+        this.announcments = [];
+        this.ads = [];
+
         // Show toast
         Materialize.toast('Your Space has been updated!', 4000);
     }, error => {
@@ -80,19 +89,18 @@ class SpaceManageController {
     console.log(this.currentSpace.requriedUserInfo.dropdown);
   }
 
-  newAnnouncement(){
-    console.log(this.currentSpace);
-    this.currentSpace.announcments.push({text: ''});
+  newAnnouncement() {
+    this.announcments.push({text: ''});
   }
 
-  newAd(){
+  newAd() {
     var ad = {
       title: '',
       description: '',
       imgUrl: '',
       link: ''
     };
-    this.currentSpace.ads.push(ad);
+    this.ads.push(ad);
   }
 
   setDropdownEditable(dropdown) {

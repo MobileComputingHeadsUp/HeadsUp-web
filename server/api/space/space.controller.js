@@ -79,6 +79,12 @@ export function update(req, res) {
   const newBeacons = _.remove(space.beacons, beacon => beacon.space === undefined);
   newBeacons.forEach(beacon => beacon.space = space._id);
 
+  // Same thing for announcments
+  const newAnnouncements = _.remove(space.announcments, announcment => announcment.timestamp === undefined);
+  //
+  // // Same thing for ads
+  const newAds = _.remove(space.ads, ad => ad.timestamp === undefined);
+
   // Finally, find the space,
   // Push the new beacons into its array. This will create subdocs for each one.
   // Then with saveUpdates, merge the new changes to the exisiting attributes
@@ -87,6 +93,8 @@ export function update(req, res) {
   return Space.findById(req.params.id).exec()
     .then(space => {
       newBeacons.forEach(beacon => space.beacons.push(beacon));
+      newAnnouncements.forEach(announcment => space.announcments.push(announcment));
+      newAds.forEach(ad => space.ads.push(ad));
       return space;
     })
     .then(ResponseHandler.handleEntityNotFound(res))
@@ -150,11 +158,11 @@ export function addUserToSpace(userId, spaceId) {
     })
     .then(space => {
       // Save the updated space with the added user to mongoDB
-      space.save()
+      return space.save()
         .then(updated => {
-          return true;
-        })
-    })
+          return updated;
+        });
+    });
 }
 
 

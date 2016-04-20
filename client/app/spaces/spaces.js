@@ -19,10 +19,7 @@ angular.module('headsUpWebApp')
         url: '/spaces/:id',
         templateUrl: 'app/spaces/manage.space.html',
         controller: 'SpaceManageController',
-        controllerAs: 'sm',
-        params: {
-            space: null
-        }
+        controllerAs: 'sm'
     });
 
 });
