@@ -33,14 +33,19 @@
         <div class="col s11" ng-show="beacon.editable">
           <label class="active" for="b-name">Beacon Name</label>
           <input type="text" id="b-name" ng-model="beacon.name">
-          <div class="input-field">
-            <label class="active" for="b-identifier">Beacon Identifier</label>
-            <input type="text" id="b-identifier" ng-model="beacon.identifier" placeholder="Enter the identifier for this beacon" required>
-            
+          <label class="active" for="b-identifier">Beacon Identifier</label>
+          <div class="input-field" id="b-identifier">
+            <input type="text"  ng-model="beacon.identifier" placeholder="Enter the identifier for this beacon" required>
           </div>
-          <div class="input-field">
-            <label class="active" for="b-enqueue">Queue Name</label>
-            <input type="text" id="b-enqueue" ng-model="beacon.enqueue.queueName" placeholder="Enter the name for this queue">
+          <label class="active" for="b-type">Beacon Type</label>
+          <div class="input-field" id="b-type">
+            <select class="browser-default">
+              <option ng-repeat="option in beacon.typeOptions" value="{{option}}">{{option}}</option>
+            </select>
+          </div>
+          <label class="active" for="b-enqueue">Queue Name</label>
+          <div class="input-field" id="b-enqueue">
+            <input type="text"  ng-model="beacon.enqueue.queueName" placeholder="Enter the name for this queue">
           </div>
           <!-- Switch -->
           <div class="row">
@@ -164,10 +169,12 @@
         <!-- Button to "finish editing" the fr -->
         <a ng-show="fr.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="fr.editable = false"><i class="material-icons">done</i></a>
       </div>
+
       <!--Sensor Select -->
-      <span>Click to Select a Sensor</span>
+      <label style="display: block; margin-bottom: 1.0rem" ng-show="sc.addLight">
+        Click to Select a Sensor
+      </label>
       <div class="row" ng-repeat="sensors in sc.lightSensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addLight">
-        
         <div class="col s5 m5 l5" ng-repeat="sensor in [$index, $index +1]" ng-if="sc.lightSensors[sensor] != null">
           <p ng-hide="sc.lightSensors[sensor].editable"> {{sc.lightSensors[sensor].name}}: {{sc.lightSensors[sensor].model}} </p>
           <div class="thumbnail" ng-hide="sc.lightSensors[sensor].editable">
@@ -187,8 +194,11 @@
 
         </div>
       </div>
+      <!--Sensor Select -->
+      <label style="display: block; margin-bottom: 1.0rem" ng-show="sc.addPress">
+        Click to Select a Sensor
+      </label>
       <div class="row" ng-repeat="sensors in sc.pressureSensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addPress">
-        
         <div class="col s5 m5 l5" ng-repeat="sensor in [$index, $index +1]" ng-if="sc.pressureSensors[sensor] != null">
           <p ng-hide="sc.pressureSensors[sensor].editable"> {{sc.pressureSensors[sensor].name}}: {{sc.pressureSensors[sensor].model}} </p>
           <div class="thumbnail" ng-hide="sc.pressureSensors[sensor].editable">
@@ -208,8 +218,11 @@
 
         </div>
       </div>
+      <!--Sensor Select -->
+      <label style="display: block; margin-bottom: 1.0rem" ng-show="sc.addProx">
+        Click to Select a Sensor
+      </label>
       <div class="row" ng-repeat="sensors in sc.proximitySensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addProx">
-        
         <div class="col s5 m5 l5" ng-repeat="sensor in [$index, $index +1]" ng-if="sc.proximitySensors[sensor] != null">
           <p ng-hide="sc.proximitySensors[sensor].editable"> {{sc.proximitySensors[sensor].name}}: {{sc.proximitySensors[sensor].model}} </p>
           <div class="thumbnail" ng-hide="sc.proximitySensors[sensor].editable">
@@ -229,7 +242,10 @@
 
         </div>
       </div>
-      
+      <!--Sensor Select -->
+      <label style="display: block; margin-bottom: 1.0rem" ng-show="sc.addTemp">
+        Click to Select a Sensor
+      </label>
       <div class="row" ng-repeat="sensors in sc.temperatureSensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addTemp">
         
         <div class="col s5 m5 l5" ng-repeat="sensor in [$index, $index +1]" ng-if="sc.temperatureSensors[sensor] != null">
@@ -254,10 +270,10 @@
 
       <!-- End repeating the form stuff-->
       <div class="row">
-        <a class="waves-effect waves-light btn deep-purple col s2 new-button" ng-click="sc.newDropDown()">New Drop Down Option</a>
-        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newCheckAll()">New Check All That Apply Option</a>
-        <a class="waves-effect waves-light btn deep-purple col s2 new-button" ng-click="sc.newFreeResponse()">New Free Response</a>
-        <a class="waves-effect waves-light btn deep-purple col s2 new-button" ng-click="sc.newBeacon()">New Beacon</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newDropDown()">New Drop Down Option</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button even-smaller-btn-text" ng-click="sc.newCheckAll()">New Check All That Apply Option</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newFreeResponse()">New Free Response</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newBeacon()">New Beacon</a>
       </div>
       <!-- Buttons for displaying sensors -->
       <div class ="row">

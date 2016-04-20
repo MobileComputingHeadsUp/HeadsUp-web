@@ -32,6 +32,7 @@ class SpaceCreateController {
     this.customFreeResponses = [];
     this.sensors = [];
     this.additionalBeacons = [];
+    this.beaconTypes = ["Entry"];
 
   }
 
@@ -181,7 +182,8 @@ class SpaceCreateController {
       editableQ: false,
       editableAds: false,
       editableSensors: false,
-      usesSensors: false
+      usesSensors: false,
+      typeOptions: this.beaconTypes
     };
     this.additionalBeacons.push(beacon);
   }
