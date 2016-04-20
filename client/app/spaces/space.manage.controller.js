@@ -17,7 +17,7 @@ class SpaceManageController {
     //console.log(this.currentSpace.beacons);
 
     console.log(this.currentSpace);
-
+    this.adBeacons = {};
     /*  Fix for optionStrings values being weird
     for(var x=0; x<this.currentSpace.requriedUserInfo.dropdown.length; x++){
       var currentDropdownOptions = [];
@@ -45,6 +45,14 @@ class SpaceManageController {
 
   }
   saveSpace() {
+    for(var x=0; x<this.currentSpace.ads.length; x++){
+      for(var y=0; y<this.currentSpace.beacons.length; y++){
+        if(this.currentSpace.beacons[y]._id == this.adBeacons[x]){
+          this.currentSpace.beacons[y].vicinityAds.push(this.currentSpace.ads[x]);
+        }
+      }
+    }
+    console.log(this.adBeacons);
     console.log(this.currentSpace);
     if (this.currentSpace) {
       // Save it

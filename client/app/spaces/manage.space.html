@@ -128,7 +128,7 @@
                 </div>
                 <div class="col s6">
                   <label>Select beacon to send ads to</label>
-                  <select class="browser-default">
+                  <select class="browser-default" ng-model = "sm.adBeacons[$index]">
                     <option value="all">All beacons</option>
                     <option ng-repeat="beacon in sm.currentSpace.beacons" value="{{beacon._id}}">{{beacon.identifier}}</option>
                   </select>
