@@ -80,6 +80,21 @@ class SpaceManageController {
     console.log(this.currentSpace.requriedUserInfo.dropdown);
   }
 
+  newAnnouncement(){
+    console.log(this.currentSpace);
+    this.currentSpace.announcments.push({text: ''});
+  }
+
+  newAd(){
+    var ad = {
+      title: '',
+      description: '',
+      imgUrl: '',
+      link: ''
+    };
+    this.currentSpace.ads.push(ad);
+  }
+
   setDropdownEditable(dropdown) {
     dropdown.editable = true;
   }
