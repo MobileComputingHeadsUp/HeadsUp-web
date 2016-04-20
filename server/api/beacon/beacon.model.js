@@ -20,6 +20,7 @@ var BeaconSchema = new Schema({
   added: {
     type: Date
   },
+  usesSensors: Boolean,
   space: {type: Schema.Types.ObjectId, ref: 'Space'}
 });
 
