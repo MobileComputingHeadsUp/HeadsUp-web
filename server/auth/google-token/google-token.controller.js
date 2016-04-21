@@ -18,6 +18,9 @@ function handleError(res, statusCode) {
 export function verifyToken(req, res) {
   var url = googleVerifyEndpoint + req.query.id_token;
 
+  const noneAction = "NONE";
+  const needsAction = "REQUIRED_GENERIC_INFO"
+
   console.log("YYOOOOOOOOOOOOO");
 
   request(url, function(error, response, body) {
@@ -27,15 +30,18 @@ export function verifyToken(req, res) {
     var data = JSON.parse(body);
 
     // Make sure that the request came from our app! We're not gettin hacked today!
-    if(data.azp.valueOf() !== config.google.androidClientID.valueOf()){
-      // The request did not come from our app.
-      return res.status(403).end();
-    }
+    // if(data.azp.valueOf() !== config.google.androidClientID.valueOf()){
+    //   // The request did not come from our app.
+    //   console.log('REQ DIDNT COME FROM OUR APP');
+    //   return res.status(403).end();
+    // }
 
     // Get the googleID from the response
     var googleID = data.sub;
 
     console.log("AAAAAAAAAAAAAAAA");
+
+    const responseWithAction = {};
 
     // Try to find a user with this id. If one does not exist, create one.
     User.findOne({'google.id': googleID}).exec()
@@ -45,7 +51,16 @@ export function verifyToken(req, res) {
           console.log(user);
           console.log("ABBBBBBBBBBBBBBBBBBB");
 
-          return res.status(200).json(user);
+          // Check if users requires generic info to be filled out
+          if (needsGenericProfileInfo(user)) {
+            responseWithAction.action = needsAction;
+          } else {
+            responseWithAction.action = noneAction;
+          }
+          // Add user to response
+          responseWithAction.user = user;
+
+          return res.status(200).json(responseWithAction);
         }
         console.log("DATA \n\n");
         console.log(data);
@@ -66,13 +81,27 @@ export function verifyToken(req, res) {
             picture: data.picture
           }
         });
-        console.log("BEFORE SAVING");
-        console.log("CCCCCCCCCCCCCCCCCC");
+        // Check if user needs to fill out gneric info
+        // He most likely will since this is his acc being created!
+        if (needsGenericProfileInfo(user)) {
+          responseWithAction.action = needsAction;
+        } else {
+          responseWithAction.action = noneAction;
+        }
 
         user.save()
-          .then(user => res.status(200).json(user))
+          .then(user => {
+            // Add user to response
+            responseWithAction.user = user;
+            res.status(200).json(responseWithAction)
+           })
           .catch(err => res.status(500).send(err));
       })
       .catch(err => res.status(500).send(err));
   });
+}
+
+
+function needsGenericProfileInfo(user) {
+  return !user.gender || !user.bio || !user.birthday
 }

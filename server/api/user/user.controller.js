@@ -168,10 +168,20 @@ export function addSpaceProfile(req, res) {
 
 export function addGenericUserInfo(req, res) {
   const user = req.user;
-  const info = req.body.info;
+  let info = {}
+  if (typeof req.body.info === "string") {
+    info = JSON.parse(req.body.info);
+  } else {
+    info = req.body.info;
+  }
+  console.log("THE INFO IS: ");
+  console.log(info);
   user.bio = info.bio;
   user.gender = info.gender;
+  console.log("BIRTHDAY STRRRRRRRRRRRING IS: ");
+  console.log(info.birthday);
   user.birthday = new Date(info.birthday);
+  console.log(user.birthday);
 
   return user.save()
     .then(ResponseHandler.respondWithResult(res))
