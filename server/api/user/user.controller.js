@@ -123,7 +123,6 @@ export function me(req, res, next) {
 export function addSpaceProfile(req, res) {
     // Get relevant data from the request
     // TODO: why the eff are you sending the space profile as a string brad?
-    // Serialize that shit into JSON on the client side plz
     let spaceProfile = {}
     if (typeof req.body.profile === "string") {
       spaceProfile = JSON.parse(req.body.profile);
@@ -165,7 +164,18 @@ export function addSpaceProfile(req, res) {
           })
           .catch(ResponseHandler.handleError(res));
       });
+}
 
+export function addGenericUserInfo(req, res) {
+  const user = req.user;
+  const info = req.body.info;
+  user.bio = info.bio;
+  user.gender = info.gender;
+  user.birthday = new Date(info.birthday);
+
+  return user.save()
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
 }
 
 // Clear all of a users space profiles!

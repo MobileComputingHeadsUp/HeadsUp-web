@@ -14,6 +14,7 @@ router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 router.post('/space_profile', middleware.attatchUserFromGoogleID, controller.addSpaceProfile);
+router.post('/generic/info', middleware.attatchUserFromGoogleID, controller.addGenericUserInfo);
 
 // Debug
 router.get('/clear/profiles/:id', controller.clearSpaceProfiles);

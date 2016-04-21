@@ -298,7 +298,7 @@ export function feed(req, res) {
 
       // Populate and clean up the users in space Array.
       // After promise is returned, respond to client
-      return cleanUpUsersInSpace(usersInSpace)
+      return cleanUpUsersInSpace(filteredUsers)
         .then(cleanedUsersInSpace => {
           // Info of the space to return
           const spaceInfo = {
@@ -347,7 +347,8 @@ function cleanUpUsersInSpace(usersInSpace) {
         //TODO: Make age virutal attribute
         // cleanedUser.age = match.user2.age;
         const timestamp = usersInSpace[i].timestamp;
-        fullyPopulatedUsers.push({user: cleanedUser, timestamp: timestamp});
+        cleanedUser.timestamp = timestamp;
+        fullyPopulatedUsers.push(cleanedUser);
       }
       return fullyPopulatedUsers;
     });

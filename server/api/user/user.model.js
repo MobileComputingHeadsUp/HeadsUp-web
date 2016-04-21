@@ -37,7 +37,15 @@ var UserSchema = new Schema({
   linkedinURL: String,
   facebookURL: String,
   bio: String, // A basic bio
-  birthday: Date
+  birthday: Date,
+  gender: String
+}, {
+  toObject: {
+  virtuals: true
+  },
+  toJSON: {
+  virtuals: true
+  }
 });
 
 /**
@@ -55,14 +63,17 @@ UserSchema
   });
 
   // Virtual age information
-  // UserSchema
-  //   .virtual('age')
-  //   .get(function() {
-  //     return {
-  //       // TODO: Make this actually return age in like "21" as a string
-  //       Date.now() - this.birthday
-  //     };
-  //   });
+  UserSchema
+    .virtual('age')
+    .get(function() {
+      // This will actually return a number age like "21"
+      const curr = new Date();
+      // This is the difference in milliseconds
+      const diff = curr - this.birthday;
+      // Divide by 1000*60*60*24*365
+      const age = Math.floor(diff/31536000000);
+      return age;
+    });
 
 // Non-sensitive info we'll be putting in the token
 UserSchema
