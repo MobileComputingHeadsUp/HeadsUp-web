@@ -117,6 +117,33 @@ export function clearUsersFromSpace(req, res) {
     .catch(ResponseHandler.handleError(res));
 }
 
+// Function called when user is out of range of all beacons with a space
+// This will remove them from the list of users in the spce
+export function leave(req, res) {
+  // Get data
+  const user = req.user;
+  const spaceID = req.body.space_id;
+
+  //  Find the space, and the remoce the user who made this request
+  // From the list of "usersInSpace"
+  // Respond with the updated space object.
+  return Space.findById(spaceID).exec()
+    .then(ResponseHandler.handleEntityNotFound(res))
+    .then(space => {
+      // Clear users in space
+      const removedUserArray = space.usersInSpace.filter(userObj => userObj.id === String(user.id));
+      space.usersInSpace = removedUserArray;
+      return space.save()
+        .then(updated => {
+          console.log("Removed " + user.name + " from space!");
+          return updated;
+        });
+    })
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
+}
+
+
 // Clear all matches from the space
 export function clearMatchesFromSpace(req, res) {
   return Space.findById(req.params.id).exec()
@@ -246,8 +273,7 @@ export function feed(req, res) {
           cleanedMatchObj.user.bio = match.user2.bio;
           cleanedMatchObj.user.gender = match.user2.gender;
 
-          //TODO: Make age virutal attribute
-          // cleanedMatchObj.user.age = match.user2.age;
+          cleanedMatchObj.user.age = match.user2.age;
 
           cleanedMatchObj.matchedAttributes = match.matchedAttributes;
           cleanedMatchObj.timestamp = match.timestamp;
@@ -273,8 +299,7 @@ export function feed(req, res) {
           }
           cleanedMatchObj.user.bio = match.user1.bio;
           cleanedMatchObj.user.gender = match.user1.gender;
-          //TODO: Make age virutal attribute
-          // cleanedMatchObj.user.age = match.user1.age;
+          cleanedMatchObj.user.age = match.user1.age;
 
           cleanedMatchObj.matchedAttributes = match.matchedAttributes;
           cleanedMatchObj.timestamp = match.timestamp;
@@ -344,8 +369,7 @@ function cleanUpUsersInSpace(usersInSpace) {
         }
         cleanedUser.bio = user.bio;
         cleanedUser.gender = user.gender;
-        //TODO: Make age virutal attribute
-        // cleanedUser.age = match.user2.age;
+        cleanedUser.age = user.age;
         const timestamp = usersInSpace[i].timestamp;
         cleanedUser.timestamp = timestamp;
         fullyPopulatedUsers.push(cleanedUser);
