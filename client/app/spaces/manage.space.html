@@ -38,6 +38,14 @@
                   <input type="text" id="space-beacon"  placeholder="New beacon name" ng-model="beacon.name" required>
                   <label for="space-beacon">Beacon Identifier</label>
                   <input type="text" id="space-beacon"  placeholder="New beacon identifier" ng-model="beacon.identifier" required>
+                  <!-- Switch -->
+                  <div class="switch" style="padding-top: 3%">
+                    <label>
+                      Will this be used as an entry beacon for your space?
+                      <input type="checkbox" ng-model="beacon.entry">
+                      <span class="lever"></span>
+                    </label>
+                  </div>
                 </div>
                 <div class = "col s1">
                   <a class="btn-floating btn-large waves-effect waves-light red" ng-click="sm.deleteBeacon(beacon)"><i class="material-icons">close</i></a>

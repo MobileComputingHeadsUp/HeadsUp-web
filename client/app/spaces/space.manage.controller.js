@@ -40,7 +40,8 @@ class SpaceManageController {
   addBeacon() {
     var newBeacon = {
       identifier: '',
-      name: ''
+      name: '',
+      entry: true
     };
     this.newBeacons.push(newBeacon);
     console.log(this.currentSpace.beacons);
@@ -76,7 +77,7 @@ class SpaceManageController {
         .then((response) => {
           // Update data we're displaying
           this.currentSpace = response;
-          
+
           this.currentBeacons = response.beacons;
 
           // Clear Stuff
