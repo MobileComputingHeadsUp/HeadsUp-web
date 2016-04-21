@@ -72,33 +72,15 @@ export function create(req, res) {
 // Updates an existing Space in the DB
 export function update(req, res) {
   // Get the space from the body of the request
-  const space = req.body;
+  const newSpace = req.body;
 
-  // Iterate thru the beacons in the request and forany new ones,
-  // Remove them from the space's list, and add the current space's ID to its space attribute
-  const newBeacons = _.remove(space.beacons, beacon => beacon.space === undefined);
-  newBeacons.forEach(beacon => beacon.space = space._id);
-
-  // Same thing for announcments
-  const newAnnouncements = _.remove(space.announcments, announcment => announcment.timestamp === undefined);
-  //
-  // // Same thing for ads
-  const newAds = _.remove(space.ads, ad => ad.timestamp === undefined);
-
-  // Finally, find the space,
-  // Push the new beacons into its array. This will create subdocs for each one.
-  // Then with saveUpdates, merge the new changes to the exisiting attributes
-  // of the space with the space we got from the DB.
-  // (Which also has the new beacons we added) and save.
-  return Space.findById(req.params.id).exec()
+  // Update it using mongoose function
+  return Space.update({_id: req.params.id}, newSpace).exec()
     .then(space => {
-      newBeacons.forEach(beacon => space.beacons.push(beacon));
-      newAnnouncements.forEach(announcment => space.announcments.push(announcment));
-      newAds.forEach(ad => space.ads.push(ad));
-      return space;
+      console.log("upadated yoo");
+      console.log(space);
+      return Space.findById(req.params.id)
     })
-    .then(ResponseHandler.handleEntityNotFound(res))
-    .then(ResponseHandler.saveUpdates(space))
     .then(ResponseHandler.respondWithResult(res))
     .catch(ResponseHandler.handleError(res));
 }
@@ -144,6 +126,42 @@ export function clearMatchesFromSpace(req, res) {
     .then(ResponseHandler.respondWithResult(res))
     .catch(ResponseHandler.handleError(res));
 }
+
+// Clear all sensors from the space
+export function clearSensorsFromSpace(req, res) {
+  return Space.findById(req.params.id).exec()
+    .then(ResponseHandler.handleEntityNotFound(res))
+    .then(space => {
+      // Clear users in space
+      space.sensors = [];
+      return space.save()
+        .then(updated => {
+          console.log("Cleared all sensors in space: " + updated.name);
+          return updated;
+        });
+    })
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
+}
+
+// Clear all sensors from the space
+export function clearAdsFromSpace(req, res) {
+  return Space.findById(req.params.id).exec()
+    .then(ResponseHandler.handleEntityNotFound(res))
+    .then(space => {
+      // Clear users in space
+      space.ads = [];
+      return space.save()
+        .then(updated => {
+          console.log("Cleared all ads in space: " + updated.name);
+          return updated;
+        });
+    })
+    .then(ResponseHandler.respondWithResult(res))
+    .catch(ResponseHandler.handleError(res));
+}
+
+
 
 // Add user to a space
 // This is only called after a user has a space profile for this space.

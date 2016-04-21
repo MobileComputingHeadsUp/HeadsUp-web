@@ -22,6 +22,9 @@ router.post('/dash', middleware.attatchUserFromGoogleID, controller.feed);
 // Debug stuff
 router.get('/clear/users/:id', controller.clearUsersFromSpace);
 router.get('/clear/matches/:id', controller.clearMatchesFromSpace);
+router.get('/clear/sensors/:id', controller.clearSensorsFromSpace);
+router.get('/clear/ads/:id', controller.clearAdsFromSpace);
+
 
 
 module.exports = router;

@@ -89,10 +89,12 @@
           <div class="row">
             <h5>Current Pending Announcements</h5>
             <ul class="collection">
-              <li class="collection-item clearfix" ng-repeat="an in sm.currentSpace.announcments">
+              <li class="collection-item clearfix" ng-repeat="an in sm.currentSpace.announcments" ng-hide="an.deleted">
                 <div>
                   {{an.text}}
-                  <a ng-click="sm.currentSpace.announcments.splice($index,1)" class="secondary-content"><i class="material-icons">delete</i></a>
+                  <a href="#" ng-click="sm.currentSpace.announcments.splice($index,1)" class="secondary-content"><i class="material-icons">delete</i></a>
+                  <!-- <a href="#" ng-click="an.deleted = true" class="secondary-content"><i class="material-icons">delete</i></a> -->
+
                 </div>
               </li>
             </ul>
@@ -124,7 +126,15 @@
         <div class="input-group">
           <div class="row">
             <div class="row">
-              <h5>Advertisements</h5>
+              <h5>Current Advertisements</h5>
+              <ul class="collection">
+                <li class="collection-item avatar" ng-repeat="an in sm.currentSpace.ads">
+                  <img ng-src="{{an.imgUrl}}" alt="" class="circle">
+                  <span class="title">{{an.title}}</span>
+                  <p>{{an.description}}</p>
+                  <a href="#!" ng-click="sm.currentSpace.ads.splice($index,1)" class="secondary-content"><i class="material-icons">delete</i></a>
+                </li>
+              </ul>
             </div>
             <div class="row" ng-repeat="ad in sm.ads track by $index">
               <div class ="row">
@@ -132,13 +142,11 @@
                   <h6>Ad {{$index + 1}}</h6>
                 </div>
                 <div class="col s6">
-                    <select multiple>
-                      <option value="" disabled selected>Apply to beacons</option>
-                      <option value="1">Option 1</option>
-                      <option value="2">Option 2</option>
-                      <option value="3">Option 3</option>
-                    </select>
-                    <label>Materialize Multiple Select</label>
+                  <select class="browser-default" ng-model="ad.beacon">
+                    <option value="" disabled selected>Select a beacon to add the ad to.</option>
+                    <option ng-repeat="beacon in sm.currentSpace.beacons" value="{{beacon.identifier}}">{{beacon.name}}</option>
+                  </select>
+                    <label>This is optional. Your ad can be associated with your entire space if you do not select anything.</label>
                 </div>
               </div>
 

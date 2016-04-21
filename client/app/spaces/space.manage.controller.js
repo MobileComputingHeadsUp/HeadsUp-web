@@ -49,28 +49,36 @@ class SpaceManageController {
 
   }
   saveSpace() {
-    console.log(this.currentSpace);
     if (this.currentSpace) {
+      // Get the ad and announcements
+      const spaceAnnouncements = this.currentSpace.announcments;
+      const spaceAds = this.currentSpace.ads;
+
+      // Add announcments to the spaces announcements
+      this.currentSpace.announcments = spaceAnnouncements.concat(this.announcments);
+
+      // Ad ads to beacons if they are associated with a beacon
+      this.adAdsToBeacon(this.ads);
+
+      // Othrwisem add ads generally to a space
+      this.currentSpace.ads = spaceAds.concat(this.ads);
+
       // Save it
-      this.currentSpace.announcments = this.announcments;
-      this.currentSpace.ads = this.ads;
       this.APIClient.updateSpace(this.currentSpace)
         .then((response) => {
-        this.currentSpace = response;
+          // Update data we're displaying
+          this.currentSpace = response;
 
-        // Clear Stuff
-        this.announcments = [];
-        this.ads = [];
+          // Clear Stuff
+          this.announcments = [];
+          this.ads = [];
 
-        // Show toast
-        Materialize.toast('Your Space has been updated!', 4000);
+          // Show toast
+          Materialize.toast('Your Space has been updated!', 4000);
     }, error => {
         Materialize.toast('Shit, an error', 4000);
         console.log(error);
       });
-      // TODO: figure out what beacon ID we will be putting in here!
-      // In order for mongoose to save the object the string inputted in the form
-      // needs to be of the right format of Schema.Types.ObjectId
     }
   }
   newDropDown() {
@@ -81,8 +89,6 @@ class SpaceManageController {
       label: 'My Custom Dropdown',
       editable: false,
       optionStrings: [{value: 'default option 1'},{value: 'default option 2'}],
-      // TODO: add in Angular Matieral in order to use a nice material switch to
-      // toggle this. Materialize doesnt have the switch :(
       matchUsers: true
     };
     this.currentSpace.requriedUserInfo.dropdown.push(dropDown);
@@ -98,7 +104,10 @@ class SpaceManageController {
       title: '',
       description: '',
       imgUrl: '',
-      link: ''
+      link: '',
+      // This will not be saved to mongo, its just used as an ng-model to see
+      // if they selected a beacon to identify the ad with
+      beacon: ''
     };
     this.ads.push(ad);
   }
@@ -131,6 +140,27 @@ class SpaceManageController {
     }
     // set this.customDropDowns to our new, fixed dropdowns array
     this.currentSpace.requriedUserInfo.dropdown = dropdowns;
+  }
+
+  adAdsToBeacon(ads) {
+    ads.forEach( (ad, index) => {
+      if (ad.beacon !== '') {
+        // Add to the appropiate beacon
+        this.findBeaconByIdentifier(ad.beacon, beacon => {
+          beacon.vicinityAds.ads.push(ad);
+          ads.splice(index, 1);
+        });
+      }
+    });
+  }
+
+  findBeaconByIdentifier(identifier, callback) {
+    this.currentSpace.beacons.forEach(beacon => {
+      if (beacon.identifier === identifier) {
+        callback(beacon);
+      }
+    });
+    return undefined;
   }
 }
 // end class
