@@ -234,12 +234,26 @@ export function feed(req, res) {
           const cleanedMatchObj = {};
 
           // Rename the matched user, and add to array
-          cleanedMatchObj.matchedUser = match.user2;
+          // cleanedMatchObj.matchedUser = match.user2;
+          cleanedMatchObj.user = {};
+          cleanedMatchObj.user.name = match.user2.name;
+          try {
+            cleanedMatchObj.user.pictureUrl = match.user2.google.image.url;
+          }
+          catch(err) {
+              console.log("user doesnt have a picture");
+          }
+          cleanedMatchObj.user.bio = match.user2.bio;
+          cleanedMatchObj.user.gender = match.user2.gender;
+
+          //TODO: Make age virutal attribute
+          // cleanedMatchObj.user.age = match.user2.age;
+
           cleanedMatchObj.matchedAttributes = match.matchedAttributes;
           cleanedMatchObj.timestamp = match.timestamp;
 
           // Keep list of matched users
-          matchedUsers.push(String(cleanedMatchObj.matchedUser));
+          matchedUsers.push(String(match.user2));
 
           // Add to the array of matches
           thisUsersMatches.push(cleanedMatchObj);
@@ -249,11 +263,24 @@ export function feed(req, res) {
 
           // Rename the matched user, and add to array
           cleanedMatchObj.matchedUser = match.user1;
+          cleanedMatchObj.user = {};
+          cleanedMatchObj.user.name = match.user1.name;
+          try {
+            cleanedMatchObj.user.pictureUrl = match.user1.google.image.url;
+          }
+          catch(err) {
+              console.log("user doesnt have a picture");
+          }
+          cleanedMatchObj.user.bio = match.user1.bio;
+          cleanedMatchObj.user.gender = match.user1.gender;
+          //TODO: Make age virutal attribute
+          // cleanedMatchObj.user.age = match.user1.age;
+
           cleanedMatchObj.matchedAttributes = match.matchedAttributes;
           cleanedMatchObj.timestamp = match.timestamp;
 
           // Keep list of matched users
-          matchedUsers.push(String(cleanedMatchObj.matchedUser));
+          matchedUsers.push(String(match.user1));
 
           // Add to the array of matches
           thisUsersMatches.push(cleanedMatchObj);
@@ -271,7 +298,7 @@ export function feed(req, res) {
 
       // Populate and clean up the users in space Array.
       // After promise is returned, respond to client
-      return cleanUpUsersInSpace(filteredUsers)
+      return cleanUpUsersInSpace(usersInSpace)
         .then(cleanedUsersInSpace => {
           // Info of the space to return
           const spaceInfo = {
@@ -307,8 +334,20 @@ function cleanUpUsersInSpace(usersInSpace) {
       // Loop through and add timestamps
       for (let i = 0; i < users.length; i++) {
         const user = users[i];
+        const cleanedUser = {};
+        cleanedUser.name = user.name;
+        try {
+          cleanedUser.pictureUrl = user.google.image.url;
+        }
+        catch(err) {
+            console.log("user doesnt have a picture");
+        }
+        cleanedUser.bio = user.bio;
+        cleanedUser.gender = user.gender;
+        //TODO: Make age virutal attribute
+        // cleanedUser.age = match.user2.age;
         const timestamp = usersInSpace[i].timestamp;
-        fullyPopulatedUsers.push({user: user, timestamp: timestamp});
+        fullyPopulatedUsers.push({user: cleanedUser, timestamp: timestamp});
       }
       return fullyPopulatedUsers;
     });
