@@ -30,14 +30,17 @@ export function testResponse(req, res) {
 export function userInfoRequired(user, space) {
   // Check to see if the users version of the space profile is up to Date.
   let spaceProfiles = user.spaceProfiles;
+  console.log("SpaceProfiles: \n" + spaceProfiles);
   if (spaceProfiles != undefined) {
-    spaceProfiles.forEach(profile => {
-      if (profile.spaceID == space._id &&
-        profile.requiredUserInfoVersion ==
-         space.requiredUserInfo.requiredUserInfoVersion) {
-        return false;
+    for(let i = 0; i < spaceProfiles.length; i++){
+      let profile = spaceProfiles[i];
+
+      if(profile.spaceID.equals(space._id) &&
+        space.requiredUserInfo.requiredUserInfoVersion ==
+        profile.requiredUserInfoVersion){
+          return false;
       }
-    });
+    }
   }
   return true;
 }
@@ -102,7 +105,8 @@ export function hitBeacon(req, res) {
           } else {
             return {
               msg: "Hey, you're in this space already silly!!",
-              action: "NONE"
+              action: "SPACE_DASH",
+              spaceID: space._id
             };
           }
         }

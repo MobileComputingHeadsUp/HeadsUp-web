@@ -7,6 +7,7 @@
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
 import Beacon from '../api/beacon/beacon.model';
+import Space from '../api/space/space.model';
 
 Thing.find({}).remove()
   .then(() => {
@@ -40,7 +41,10 @@ Thing.find({}).remove()
     });
   });
 
-User.find({}).remove();
+// User.find({}).remove();
+// Space.find({}).remove();
+// Beacon.find({}).remove();
+
 
 //
 // User.find({}).remove()
