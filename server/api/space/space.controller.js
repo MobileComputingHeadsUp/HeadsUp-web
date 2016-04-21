@@ -246,8 +246,7 @@ export function feed(req, res) {
           cleanedMatchObj.user.bio = match.user2.bio;
           cleanedMatchObj.user.gender = match.user2.gender;
 
-          //TODO: Make age virutal attribute
-          // cleanedMatchObj.user.age = match.user2.age;
+          cleanedMatchObj.user.age = match.user2.age;
 
           cleanedMatchObj.matchedAttributes = match.matchedAttributes;
           cleanedMatchObj.timestamp = match.timestamp;
@@ -273,8 +272,7 @@ export function feed(req, res) {
           }
           cleanedMatchObj.user.bio = match.user1.bio;
           cleanedMatchObj.user.gender = match.user1.gender;
-          //TODO: Make age virutal attribute
-          // cleanedMatchObj.user.age = match.user1.age;
+          cleanedMatchObj.user.age = match.user1.age;
 
           cleanedMatchObj.matchedAttributes = match.matchedAttributes;
           cleanedMatchObj.timestamp = match.timestamp;
@@ -344,8 +342,7 @@ function cleanUpUsersInSpace(usersInSpace) {
         }
         cleanedUser.bio = user.bio;
         cleanedUser.gender = user.gender;
-        //TODO: Make age virutal attribute
-        // cleanedUser.age = match.user2.age;
+        cleanedUser.age = user.age;
         const timestamp = usersInSpace[i].timestamp;
         cleanedUser.timestamp = timestamp;
         fullyPopulatedUsers.push(cleanedUser);
