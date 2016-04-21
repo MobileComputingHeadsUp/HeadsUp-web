@@ -31,12 +31,14 @@ class SpaceCreateController {
     this.customCheckAlls = [];
     this.customFreeResponses = [];
     this.sensors = [];
+    this.additionalBeacons = [];
 
   }
 
    // Function to save this created space to the DB
   newSpace() {
     if (this.newSpaceName) {
+      this.pushedBeacons = [];
       // Set description
       var description = 'This is the default description WOOOOW.';
       if (this.newSpaceDescription !== '') {description = this.newSpaceDescription;}
@@ -44,6 +46,7 @@ class SpaceCreateController {
       // this is necessary.
       this.cleanUpOptionsArray(this.customDropDowns);
       this.cleanUpOptionsArray(this.customCheckAlls);
+
 
       //pulling sensors from each sensor type aray to get pushed in as a single array of sensors
       //maybe we should seperate sensor types on the space schema?
@@ -56,6 +59,23 @@ class SpaceCreateController {
         sensorArray.push(this.pressureSensors[i]);
       for(var i in this.lightSensors)
         sensorArray.push(this.lightSensors[i]);
+
+
+      for(var i in this.additionalBeacons){
+        this.pushedBeacons[i] ={
+          identifier: this.additionalBeacons[i].identifier,
+          name: this.additionalBeacons[i].name,
+          entry: false,
+          vicinityAds: {
+            ads: []
+          },
+          vicinitySensors: {
+            sensors: []
+          },
+          usesSensors: this.additionalBeacons[i].usesSensors
+        }
+      }
+      
       // Create the space object
       var newSpace = {
         name: this.newSpaceName,
@@ -63,6 +83,8 @@ class SpaceCreateController {
         identifier: this.newSpaceBeaconID,
 
         sensors: sensorArray,
+
+        additionalBeacons: this.pushedBeacons,
 
         requiredUserInfo:{
           dropdown: this.customDropDowns,
@@ -104,6 +126,12 @@ class SpaceCreateController {
     this.customDropDowns.push(dropDown);
   }
 
+  removeDropdown(index) {
+
+    this.customDropDowns.splice(index,1);
+  }
+
+
   newDropDownOption(dropdown) {
     var count = dropdown.optionStrings.length + 1;
     dropdown.optionStrings.push({value: 'default option ' + count});
@@ -123,10 +151,14 @@ class SpaceCreateController {
     };
     this.customCheckAlls.push(checkAll);
   }
+  removeCheckAll(index) {
+    this.customCheckAlls.splice(index,1);
+  }
   newCheckOption(check) {
     var count = check.optionStrings.length + 1;
     check.optionStrings.push({value: 'default option ' + count});
   }
+
 
   //// FREE RESPONSE RELATED FUNCTIONALITY ////
 
@@ -141,6 +173,31 @@ class SpaceCreateController {
       charLimit: 50
     };
     this.customFreeResponses.push(freeResponse);
+  }
+  removeFreeResponse(index) {
+    this.customFreeResponses.splice(index,1);
+  }
+  newBeacon() {
+    // the number'th dropdown
+    var number = this.additionalBeacons.length + 1;
+    var beacon = {
+      identifier: "",
+      name: 'My New Beacon',
+      entry: false,
+      enqueue: {queueName: "My Queue"},
+      vicinityAds: {ads:[]},
+      vicinitySensors: {sensors:[]},
+      editable: true,
+      editableQ: false,
+      editableAds: false,
+      editableSensors: false,
+      usesSensors: false
+    };
+    this.additionalBeacons.push(beacon);
+  }
+  removeAdditionalBeacons(index) {
+    console.log("Remove Called");
+    this.additionalBeacons.splice(index,1);
   }
 
 
