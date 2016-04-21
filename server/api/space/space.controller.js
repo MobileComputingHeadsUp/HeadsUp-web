@@ -10,7 +10,9 @@
 'use strict';
 
 import _ from 'lodash';
+import mongoose from 'mongoose';
 import Space from './space.model';
+import User from '../user/user.model';
 const ResponseHandler = require('../utilities/response.handlers.js');
 var matching = require('../utilities/matching.js');
 
@@ -167,11 +169,20 @@ export function clearAdsFromSpace(req, res) {
 // This is only called after a user has a space profile for this space.
 export function addUserToSpace(userId, spaceId) {
   console.log("Adding user " + userId + " to space");
+  // NEED TO CHECK IF USER IS IN SPACE LOL
   return Space.findById(spaceId).exec()
     .then(space => {
-      space.usersInSpace.push(userId);
-      // Run match algorithm asyncronously
-      matching.checkForMatchesWithNewUser(userId, space);
+
+      // Check if user is in the space already.
+      let inSpace = space.usersInSpace.some(userObj => userObj.id === userId);
+
+      // If user is not in space already,
+      // add em to it and run match algorithm
+      if (!inSpace) {
+        space.usersInSpace.push(userId);
+        // Run match algorithm asyncronously
+        matching.checkForMatchesWithNewUser(userId, space);
+      } else console.log("!!!!!!!!!!!!!!!@@@@@@@@@USER IS ALRDY IN SPACE");
       return space;
     })
     .then(space => {
@@ -192,9 +203,15 @@ export function feed(req, res) {
   const user = req.user;
 
   // Get the space
-  return Space.findById(spaceID).exec()
+  return Space.findById(spaceID).populate('userMatches.user1 userMatches.user2').exec()
     .then(space => {
-      const ads = space.ads;
+      // Get general ads from space
+      let ads = space.ads;
+
+      // Also add in ads specific to beacons
+      const beaconAds = findAllAdsInTheseBeacons(beacons, space.beacons);
+      ads = ads.concat(beaconAds);
+
       const announcments = space.announcments;
 
       // Will look for matches that contain this user making the req.
@@ -208,7 +225,7 @@ export function feed(req, res) {
 
       // Find matches that contain this user in the space.
       matches.forEach(match => {
-        if (String(match.user1) === user.id) {
+        if (String(match.user1.id) === user.id) {
           const cleanedMatchObj = {};
 
           // Rename the matched user, and add to array
@@ -222,7 +239,7 @@ export function feed(req, res) {
           // Add to the array of matches
           thisUsersMatches.push(cleanedMatchObj);
         }
-        else if (String(match.user2) === user.id) {
+        else if (String(match.user2.id) === user.id) {
           const cleanedMatchObj = {};
 
           // Rename the matched user, and add to array
@@ -244,29 +261,63 @@ export function feed(req, res) {
       // Filter out matched users from general user list
       // Also make sure we dont send ourself in the general user list
       const filteredUsers = usersInSpace.filter(userObj => {
-        !matchedUsers.some(u => u === userObj.id) && userObj.id !== user.id
+        !matchedUsers.some(u => u.id === userObj.id) && userObj.id !== user.id
       });
 
-      // Info of the space to return
-      const spaceInfo = {
-        name: space.name,
-        description: space.description,
-        id: space.id
-      }
+      // Populate and clean up the users in space Array.
+      // After promise is returned, respond to client
+      return cleanUpUsersInSpace(filteredUsers)
+        .then(cleanedUsersInSpace => {
+          // Info of the space to return
+          const spaceInfo = {
+            name: space.name,
+            description: space.description,
+            id: space.id
+          }
 
-      // Respond with all the data!
-      const response = {
-        ads: ads,
-        announcments: announcments,
-        matches: thisUsersMatches,
-        users: filteredUsers,
-        space: spaceInfo
-      };
-
-      // Respond
-      res.status(200).json(response);
-
+          // Respond with all the data!
+          const response = {
+            ads: ads,
+            announcments: announcments,
+            matches: thisUsersMatches,
+            users: cleanedUsersInSpace, //PUT BACK TO FILTERED
+            space: spaceInfo
+          };
+          // Respond
+          res.status(200).json(response);
+        })
     })
     .catch(ResponseHandler.handleError(res));
+}
 
+function cleanUpUsersInSpace(usersInSpace) {
+  // Convert ids to mongoose ids
+  const userIdsInSpace = usersInSpace.map(userObj => mongoose.Types.ObjectId(userObj.id));
+
+  // Find all users from my arra of ids
+  return User.find({ '_id': { $in: userIdsInSpace}}).exec()
+    .then(users => {
+      const fullyPopulatedUsers = [];
+
+      // Loop through and add timestamps
+      for (let i = 0; i < users.length; i++) {
+        const user = users[i];
+        const timestamp = usersInSpace[i].timestamp;
+        fullyPopulatedUsers.push({user: user, timestamp: timestamp});
+      }
+      return fullyPopulatedUsers;
+    });
+}
+
+function findAllAdsInTheseBeacons(beaconIdentifiers, beaconsInSpace) {
+  const beaconsInRange = beaconsInSpace.filter(b => beaconIdentifiers.some(i => i === b.identifier));
+
+  // Array of ads containing all ads associated with beacons in range
+  let ads = [];
+  beaconsInRange.forEach(beacon => {
+    if (beacon.vicinityAds.ads) {
+      ads = ads.concat(beacon.vicinityAds.ads);
+    }
+  });
+  return ads;
 }

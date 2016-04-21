@@ -71,7 +71,8 @@ export function checkForMatchesWithNewUser(userId, space) {
 
 function saveMatchesToSpace(matches, space) {
   // Now save the matches array to the space.
-  matches.forEach(match => space.userMatches.push(match));
+  // matches.forEach(match => space.userMatches.push(match));
+  space.userMatches = matches;
 
   // Save the space to mongoDB
   return space.save()
@@ -114,21 +115,23 @@ function findMatchesInSpaceProfiles(profileA, profileB, requiredUserInfo) {
 function findMatchedDropdowns(dropdownsA, dropdownsB, requiredUserInfo) {
   const matches = [];
   requiredUserInfo.dropdown.forEach(dropdown => {
-    const label = dropdown.label;
-    // console.log("THIS DROPDOWNS LABEL: " + label);
-    // Find this specific  drop down in each of the users space profile
-    const dropObjA = dropdownsA.find(findObjectByKeyInArray(label));
-    const dropObjB = dropdownsB.find(findObjectByKeyInArray(label));
+    if (dropdown.matchUsers) {
+      const label = dropdown.label;
+      // console.log("THIS DROPDOWNS LABEL: " + label);
+      // Find this specific  drop down in each of the users space profile
+      const dropObjA = dropdownsA.find(findObjectByKeyInArray(label));
+      const dropObjB = dropdownsB.find(findObjectByKeyInArray(label));
 
-    const dropdownAnswerA = dropObjA[label];
-    const dropdownAnswerB = dropObjB[label];
-    // console.log("Dropdown answer for A: " + dropdownAnswerA);
-    // console.log("Dropdown answer for B: " + dropdownAnswerB);
+      const dropdownAnswerA = dropObjA[label];
+      const dropdownAnswerB = dropObjB[label];
+      // console.log("Dropdown answer for A: " + dropdownAnswerA);
+      // console.log("Dropdown answer for B: " + dropdownAnswerB);
 
-    // If we found an equal answer, add it to the matches arr!
-    if (dropdownAnswerA === dropdownAnswerB) {
-      const aNewMatch = { [label]: dropdownAnswerA };
-      matches.push(aNewMatch);
+      // If we found an equal answer, add it to the matches arr!
+      if (dropdownAnswerA === dropdownAnswerB) {
+        const aNewMatch = { [label]: [dropdownAnswerA] };
+        matches.push(aNewMatch);
+      }
     }
   });
   return matches;
@@ -137,26 +140,28 @@ function findMatchedDropdowns(dropdownsA, dropdownsB, requiredUserInfo) {
 function findMatchedChecks(checksA, checksB, requiredUserInfo) {
   const matches = [];
   requiredUserInfo.checkAllThatApply.forEach(checkAll => {
-    const label = checkAll.label;
-    // console.log("THIS CHECKS LABEL: " + label);
-    // Find this specific check all in each of the users space profile
-    const checkObjA = checksA.find(findObjectByKeyInArray(label));
-    const checkObjB = checksB.find(findObjectByKeyInArray(label));
+    if (checkAll.matchUsers) {
+      const label = checkAll.label;
+      // console.log("THIS CHECKS LABEL: " + label);
+      // Find this specific check all in each of the users space profile
+      const checkObjA = checksA.find(findObjectByKeyInArray(label));
+      const checkObjB = checksB.find(findObjectByKeyInArray(label));
 
-    const checkAnswerA = checkObjA[label];
-    const checkAnswerB = checkObjB[label];
-    // console.log("Check answer for A: ");
-    // console.log(checkAnswerA);
-    // console.log("Check answer for B: ");
-    // console.log(checkAnswerB);
+      const checkAnswerA = checkObjA[label];
+      const checkAnswerB = checkObjB[label];
+      // console.log("Check answer for A: ");
+      // console.log(checkAnswerA);
+      // console.log("Check answer for B: ");
+      // console.log(checkAnswerB);
 
-    // Get the intersection of both of their answers for this question
-    const intersection = checkAnswerA.filter(a => checkAnswerB.some(b => b === a));
-    // If size of intersection != 0, means they had at least
-    // one common answer for this check all question, Add it!
-    if (intersection.length) {
-      const aNewMatch = { [label]: intersection };
-      matches.push(aNewMatch);
+      // Get the intersection of both of their answers for this question
+      const intersection = checkAnswerA.filter(a => checkAnswerB.some(b => b === a));
+      // If size of intersection != 0, means they had at least
+      // one common answer for this check all question, Add it!
+      if (intersection.length) {
+        const aNewMatch = { [label]: intersection };
+        matches.push(aNewMatch);
+      }
     }
   });
   return matches;
@@ -168,33 +173,35 @@ function findMatchedChecks(checksA, checksB, requiredUserInfo) {
 function findMatchedFreeResponses(freeResponsesA, freeResponsesB, requiredUserInfo) {
   const matches = [];
   requiredUserInfo.freeResponse.forEach(freeResponse => {
-    const label = freeResponse.label;
-    // console.log("THIS FREE RESPONSES LABEL: " + label);
-    // Find this specific check all in each of the users space profile
-    const frObjA = freeResponsesA.find(findObjectByKeyInArray(label));
-    const frObjB = freeResponsesB.find(findObjectByKeyInArray(label));
+    if (freeResponse.matchUsers) {
+      const label = freeResponse.label;
+      // console.log("THIS FREE RESPONSES LABEL: " + label);
+      // Find this specific check all in each of the users space profile
+      const frObjA = freeResponsesA.find(findObjectByKeyInArray(label));
+      const frObjB = freeResponsesB.find(findObjectByKeyInArray(label));
 
-    const frAnswerA = frObjA[label];
-    const frAnswerB = frObjB[label];
-    // console.log("FR answer for A: ");
-    // console.log(frAnswerA);
-    // console.log("FR answer for B: ");
-    // console.log(frAnswerB);
+      const frAnswerA = frObjA[label];
+      const frAnswerB = frObjB[label];
+      // console.log("FR answer for A: ");
+      // console.log(frAnswerA);
+      // console.log("FR answer for B: ");
+      // console.log(frAnswerB);
 
-    // Amount of words to be considered a simlar answer
-    const threshold = 2;
+      // Amount of words to be considered a simlar answer
+      const threshold = 2;
 
-    // Convert each string answer to array of words
-    const wordsA = frAnswerA.split(" ");
-    const wordsB = frAnswerB.split(" ");
+      // Convert each string answer to array of words
+      const wordsA = frAnswerA.split(" ");
+      const wordsB = frAnswerB.split(" ");
 
-    // Get the intersection of both of their answers for this question
-    const intersection = wordsA.filter(a => wordsB.some(b => b === a));
-    // If size of intersection > threshold, means they had
-    // common words in their answer for this free response
-    if (intersection.length >= threshold) {
-      const aNewMatch = { [label]: intersection };
-      matches.push(aNewMatch);
+      // Get the intersection of both of their answers for this question
+      const intersection = wordsA.filter(a => wordsB.some(b => b === a));
+      // If size of intersection > threshold, means they had
+      // common words in their answer for this free response
+      if (intersection.length >= threshold) {
+        const aNewMatch = { [label]: intersection };
+        matches.push(aNewMatch);
+      }
     }
   });
   return matches;
