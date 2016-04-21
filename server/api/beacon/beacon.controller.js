@@ -65,7 +65,7 @@ export function hitBeacon(req, res) {
   return spaceByBeaconIdentifier(identifier)
     .then(space => {
 
-      if (space === undefined) {
+      if (!space) {
         return {
           msg: "Could not find space.",
           action: "NONE"

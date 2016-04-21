@@ -7,7 +7,14 @@
 import errors from './components/errors';
 import path from 'path';
 
+
 export default function(app) {
+
+  //setup healthcheck api
+  app.get('/healthcheck', function (req, res) {
+    res.sendStatus(200)
+  })
+
   // Insert routes below
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));

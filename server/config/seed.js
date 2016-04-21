@@ -213,7 +213,6 @@ Thing.find({}).remove()
   });
 
 
-
 // User.find({}).remove();
 // Space.find({}).remove();
 // Beacon.find({}).remove();
