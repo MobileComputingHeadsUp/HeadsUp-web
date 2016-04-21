@@ -22,52 +22,22 @@
       <label style="display: block; margin-bottom: 1.0rem">
           This information will tailor your patrons experience to your Space. Choose wisely!
       </label>
-      <!-- REPEAT ADDITIONAL BEACONS -->
-      <div ng-repeat="beacon in sc.additionalBeacons" class="row">
-        <!-- Display beacon Name -->
-        <div class="input-field col s11" ng-hide="beacon.editable">
-          <input type="text" id="beacon-name" placeholder="New beacon's name" ng-model="beacon.name" >
-        </div>
-        <!-- View to customize the Dropdown title and Options -->
-        <a ng-hide="beacon.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="beacon.editable = true"><i class="material-icons">mode_edit</i></a>        <!-- Form to edit the dropdown -->
-        <div class="col s11" ng-show="beacon.editable">
-          <label class="active" for="b-name">Beacon Name</label>
-          <input type="text" id="b-name" ng-model="beacon.name">
-          <div class="input-field">
-            <label class="active" for="b-identifier">Beacon Identifier</label>
-            <input type="text" id="b-identifier" ng-model="beacon.identifier" placeholder="Enter the identifier for this beacon" required>
-            
-          </div>
-          <div class="input-field">
-            <label class="active" for="b-enqueue">Queue Name</label>
-            <input type="text" id="b-enqueue" ng-model="beacon.enqueue.queueName" placeholder="Enter the name for this queue">
-          </div>
-          <!-- Switch -->
-          <div class="row">
-            <div class="switch" style="padding-top: 3%">
-              <label>
-                Will this beacon be attached with sensors?
-                <input type="checkbox" ng-model="beacon.usesSensors">
-                <span class="lever"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <!-- Button to "finish editing" the dropdown -->
-        <a ng-show="beacon.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="beacon.editable = false"><i class="material-icons">done</i></a>
-      </div>
-
       <!-- REPEAT CUSTOM DROPDOWNS -->
       <div ng-repeat="dropdown in sc.customDropDowns" class="row">
         <!-- Display the actual dropdown in form it would be shown to Users -->
-        <div class="input-field col s11" ng-hide="dropdown.editable">
+        <div class="input-field col s9" ng-hide="dropdown.editable">
           <select class="browser-default">
             <option value="" disabled selected>{{dropdown.label}}</option>
             <option ng-repeat="option in dropdown.optionStrings" value="{{option.number}}">{{option.value}}</option>
           </select>
         </div>
         <!-- View to customize the Dropdown title and Options -->
-        <a ng-hide="dropdown.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="dropdown.editable = true"><i class="material-icons">mode_edit</i></a>        <!-- Form to edit the dropdown -->
+        <div ng-hide="dropdown.editable" class="col 2" style="padding-top: 2%;padding-left: 5.5%;">
+          <a ng-hide="dropdown.editable" class="btn-floating btn-medium waves-effect waves-light red right" ng-click="sc.removeDropdown($index);"><i class="material-icons">delete</i></a>
+          <a ng-hide="dropdown.editable" class="btn-floating btn-medium waves-effect waves-light red right" ng-click="dropdown.editable = true"><i class="material-icons">mode_edit</i></a>
+          
+        </div>        
+        <!-- Form to edit the dropdown -->
         <div class="col s11" ng-show="dropdown.editable">
           <label class="active" for="dd-title">Dropdown Title</label>
           <input type="text" id="dd-title" ng-model="dropdown.label" placeholder="Enter a title for this dropdown">
@@ -95,7 +65,9 @@
       <!-- Display the actual checkbox in form it would be shown to Users -->
       <div ng-repeat="check in sc.customCheckAlls" class="row">
         <div ng-hide="check.editable" class="col s11">
-          <a  class="btn-floating btn-large waves-effect waves-light red right" ng-click="check.editable = true"><i class="material-icons">mode_edit</i></a>
+          <a  class="btn-floating btn-medium waves-effect waves-light red right" ng-click="sc.removeCheckAll($index)"><i class="material-icons">delete</i></a>
+          <a  class="btn-floating btn-medium waves-effect waves-light red right" ng-click="check.editable = true"><i class="material-icons">mode_edit</i></a>
+          
           <p>{{check.label}}</p>
           <form action="#">
             <p ng-repeat="option in check.optionStrings track by $index">
@@ -133,10 +105,13 @@
       <div ng-repeat="fr in sc.customFreeResponses track by $index" class="row">
         <form class="col s12" ng-hide="fr.editable">
           <div class="row">
-            <a  class="btn-floating btn-large waves-effect waves-light red right" ng-click="fr.editable = true"><i class="material-icons">mode_edit</i></a>
-            <div class="input-field col s11">
+            <div class="input-field col s9">
               <textarea id="UNIQUE{{$index}}" class="materialize-textarea" length="{{fr.charLimit}}"></textarea>
               <label for="UNIQUE{{$index}}">{{fr.label}}</label>
+            </div>
+            <div class="input-field col s2">
+              <a  class="btn-floating btn-medium waves-effect waves-light red right" ng-click="sc.removeFreeResponse($index)"><i class="material-icons">delete</i></a>
+              <a  class="btn-floating btn-medium waves-effect waves-light red right" ng-click="fr.editable = true"><i class="material-icons">mode_edit</i></a>
             </div>
           </div>
         </form>
@@ -164,7 +139,46 @@
         <!-- Button to "finish editing" the fr -->
         <a ng-show="fr.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="fr.editable = false"><i class="material-icons">done</i></a>
       </div>
-      <!--Sensor Select -->
+      <!-- Beacons -->
+      <div ng-repeat="beacon in sc.additionalBeacons" class="row">
+        <!-- Display beacon Name -->
+        <div class="input-field col s9" ng-hide="beacon.editable">
+          <input type="text" id="beacon-name" placeholder="New beacon's name" ng-model="beacon.name" >
+        </div>
+        <!-- View to customize the Dropdown title and Options -->
+        <div ng-hide="beacon.editable" class="col 2" style="padding-top: 2%">
+          <a ng-hide="beacon.editable" class="btn-floating btn-medium waves-effect waves-light red right" ng-click="sc.removeAdditionalBeacons($index);"><i class="material-icons">delete</i></a>
+          <a ng-hide="beacon.editable" class="btn-floating btn-medium waves-effect waves-light red right" ng-click="dropdown.editable = true"><i class="material-icons">mode_edit</i></a>
+          
+        </div> 
+       <!-- Form to edit the dropdown -->
+        <div class="col s11" ng-show="beacon.editable">
+          <label class="active" for="b-name">Beacon Name</label>
+          <input type="text" id="b-name" ng-model="beacon.name">
+          <div class="input-field">
+            <label class="active" for="b-identifier">Beacon Identifier</label>
+            <input type="text" id="b-identifier" ng-model="beacon.identifier" placeholder="Enter the identifier for this beacon" required>
+            
+          </div>
+          <div class="input-field">
+            <label class="active" for="b-enqueue">Queue Name</label>
+            <input type="text" id="b-enqueue" ng-model="beacon.enqueue.queueName" placeholder="Enter the name for this queue">
+          </div>
+          <!-- Switch -->
+          <div class="row">
+            <div class="switch" style="padding-top: 3%">
+              <label>
+                Will this beacon be attached with sensors?
+                <input type="checkbox" ng-model="beacon.usesSensors">
+                <span class="lever"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Button to "finish editing" the dropdown -->
+        <a ng-show="beacon.editable" class="btn-floating btn-large waves-effect waves-light red right" ng-click="beacon.editable = false"><i class="material-icons">done</i></a>
+      </div>
+      <!--Sensor Select 
       <span>Click to Select a Sensor</span>
       <div class="row" ng-repeat="sensors in sc.lightSensors track by $index" ng-if="$index %2 == 0" ng-show="sc.addLight">
         
@@ -251,15 +265,15 @@
 
         </div>
       </div>
-
+      -->
       <!-- End repeating the form stuff-->
       <div class="row">
-        <a class="waves-effect waves-light btn deep-purple col s2 new-button" ng-click="sc.newDropDown()">New Drop Down Option</a>
-        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newCheckAll()">New Check All That Apply Option</a>
-        <a class="waves-effect waves-light btn deep-purple col s2 new-button" ng-click="sc.newFreeResponse()">New Free Response</a>
-        <a class="waves-effect waves-light btn deep-purple col s2 new-button" ng-click="sc.newBeacon()">New Beacon</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newDropDown()">New Drop Down</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newCheckAll()">New Check All</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newFreeResponse()">New Free Response</a>
+        <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.newBeacon()">New Beacon</a>
       </div>
-      <!-- Buttons for displaying sensors -->
+      <!-- Buttons for displaying sensors 
       <div class ="row">
         <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addLight = true;" ng-hide="sc.addLight">Show Light Sensors</a> 
         <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addLight = false;" ng-show="sc.addLight">Hide Light Sensors</a>
@@ -273,6 +287,7 @@
         <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addTemp = true;" ng-hide="sc.addTemp">Show Temperature Sensors</a>
         <a class="waves-effect waves-light btn deep-purple col s2 new-button smaller-btn-text" ng-click="sc.addTemp = false;" ng-show="sc.addTemp">Hide Temperature Sensors</a>
       </div>
+      -->
     </p>
     
     <!-- Save the new space button: end of form -->

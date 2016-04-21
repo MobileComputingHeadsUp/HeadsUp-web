@@ -60,16 +60,7 @@ export function create(req, res) {
   // Push the beacon subdoc
   space.beacons.push(beacon);
 
-<<<<<<< HEAD
-  //push the sensors subdoc
-  for (var i in sensors)
-    space.sensors.push(sensors[i]);
 
-  // Save the space to mongoDB
-  return space.save()
-    .then(ResponseHandler.respondWithResult(res, 201))
-    .catch(ResponseHandler.handleError(res));
-=======
     //push the sensors subdoc
     for(var i in sensors)
       space.sensors.push(sensors[i]);
@@ -81,7 +72,6 @@ export function create(req, res) {
     return space.save()
         .then(ResponseHandler.respondWithResult(res, 201))
         .catch(ResponseHandler.handleError(res));
->>>>>>> add-more-beacons
 }
 
 // Updates an existing Space in the DB

@@ -66,9 +66,6 @@ class SpaceCreateController {
           identifier: this.additionalBeacons[i].identifier,
           name: this.additionalBeacons[i].name,
           entry: false,
-          enqueue: {
-            queueName: this.additionalBeacons[i].enqueue.queueName
-          },
           vicinityAds: {
             ads: []
           },
@@ -129,6 +126,12 @@ class SpaceCreateController {
     this.customDropDowns.push(dropDown);
   }
 
+  removeDropdown(index) {
+
+    this.customDropDowns.splice(index,1);
+  }
+
+
   newDropDownOption(dropdown) {
     var count = dropdown.optionStrings.length + 1;
     dropdown.optionStrings.push({value: 'default option ' + count});
@@ -148,10 +151,14 @@ class SpaceCreateController {
     };
     this.customCheckAlls.push(checkAll);
   }
+  removeCheckAll(index) {
+    this.customCheckAlls.splice(index,1);
+  }
   newCheckOption(check) {
     var count = check.optionStrings.length + 1;
     check.optionStrings.push({value: 'default option ' + count});
   }
+
 
   //// FREE RESPONSE RELATED FUNCTIONALITY ////
 
@@ -166,6 +173,9 @@ class SpaceCreateController {
       charLimit: 50
     };
     this.customFreeResponses.push(freeResponse);
+  }
+  removeFreeResponse(index) {
+    this.customFreeResponses.splice(index,1);
   }
   newBeacon() {
     // the number'th dropdown
@@ -184,6 +194,10 @@ class SpaceCreateController {
       usesSensors: false
     };
     this.additionalBeacons.push(beacon);
+  }
+  removeAdditionalBeacons(index) {
+    console.log("Remove Called");
+    this.additionalBeacons.splice(index,1);
   }
 
 
