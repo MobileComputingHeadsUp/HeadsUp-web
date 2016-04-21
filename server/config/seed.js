@@ -9,6 +9,177 @@ import User from '../api/user/user.model';
 import Beacon from '../api/beacon/beacon.model';
 import Space from '../api/space/space.model';
 
+User.find({}).remove()
+  .then(() => {
+    User.create({
+      "name": "Jane Smith",
+      "email": "nqwdnqwiondoiwqd@gmail.com",
+      "provider": "google",
+      "google": {
+        "kind": "plus#person",
+        "id": "105979492421200560976",
+        "displayName": "Jane Smith",
+        "image": {
+        "url": "http://i.istockimg.com/image-zoom/87462343/3/254/380/stock-photo-87462343-portrait.jpg",
+        "isDefault": true
+        },
+        "language": "en",
+        "verified": false
+      },
+      "birthday": "1990-04-03T00:00:00.000Z",
+      "spaceProfiles": [
+        {
+          "data": {
+            "checkAllThatApplys": [
+              {
+              "What are your favorite drinks?": ["Beer", "Rum"]
+              },
+              {
+              "How do you spend your free time?": ["Exercising", "Reading"]
+              }
+            ],
+            "dropdowns": [
+              {
+              "Where are you from?": "The West"
+              },
+              {
+              "Whats your favorite color?": "Blue"
+              },
+              {
+              "Why are you here tonight?": "To make new friends"
+              }
+            ],
+            "freeResponses": [
+            {
+              "What do you like most about The Foo Bar?": "The atmosphere"
+            },
+            {
+              "Whats an interesting fact about yourself?": "I'm a cool girl"
+            }
+            ]
+          },
+          requiredUserInfoVersion: 0,
+          spaceID: "5718e6677a5c06666f1843f1"
+        }
+      ],
+      role: "user"
+    },{
+      "name": "Melany Jones",
+      "email": "qsqsq@gmail.com",
+      "provider": "google",
+      "google": {
+        "kind": "plus#person",
+        "id": "105979492428905560976",
+        "displayName": "Jane Smith",
+        "image": {
+        "url": "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50",
+        "isDefault": true
+        },
+        "language": "en",
+        "verified": false
+      },
+      "birthday": "1990-04-03T00:00:00.000Z",
+      "spaceProfiles": [
+        {
+          "data": {
+            "checkAllThatApplys": [
+              {
+              "What are your favorite drinks?": ["Beer"]
+              },
+              {
+              "How do you spend your free time?": ["Coding", "Reading"]
+              }
+            ],
+            "dropdowns": [
+              {
+              "Where are you from?": "The North"
+              },
+              {
+              "Whats your favorite color?": "Red"
+              },
+              {
+              "Why are you here tonight?": "To make new friends"
+              }
+            ],
+            "freeResponses": [
+            {
+              "What do you like most about The Foo Bar?": "The atmosphere is very nice"
+            },
+            {
+              "Whats an interesting fact about yourself?": "I'm a cool girl"
+            }
+            ]
+          },
+          requiredUserInfoVersion: 0,
+          spaceID: "5718e6677a5c06666f1843f1"
+        }
+      ],
+      role: "user"
+    },{
+      "name": "John Doe",
+      "email": "beeeee@gmail.com",
+      "provider": "google",
+      "google": {
+        "kind": "plus#person",
+        "id": "105978976421200560976",
+        "displayName": "12e Smith",
+        "image": {
+        "url": "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50",
+        "isDefault": true
+        },
+        "language": "en",
+        "verified": false
+      },
+      "birthday": "1990-04-03T00:00:00.000Z",
+      "spaceProfiles": [
+        {
+          "data": {
+            "checkAllThatApplys": [
+              {
+              "What are your favorite drinks?": ["Vodka", "Brandy"]
+              },
+              {
+              "How do you spend your free time?": ["Exercising", "Surfing"]
+              }
+            ],
+            "dropdowns": [
+              {
+              "Where are you from?": "The Northeast"
+              },
+              {
+              "Whats your favorite color?": "Yellow"
+              },
+              {
+              "Why are you here tonight?": "To have fun"
+              }
+            ],
+            "freeResponses": [
+            {
+              "What do you like most about The Foo Bar?": "The specials!"
+            },
+            {
+              "Whats an interesting fact about yourself?": "I'm a cool dude"
+            }
+            ]
+          },
+          requiredUserInfoVersion: 0,
+          spaceID: "5718e6677a5c06666f1843f1"
+        }
+      ],
+      role: "user"
+
+    },{
+
+    },{
+
+    },{
+
+    });
+  });
+
+
+
+
 Thing.find({}).remove()
   .then(() => {
     Thing.create({
@@ -40,6 +211,8 @@ Thing.find({}).remove()
              'and openshift subgenerators'
     });
   });
+
+
 
 // User.find({}).remove();
 // Space.find({}).remove();
