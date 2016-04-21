@@ -30,7 +30,7 @@ User.find({}).remove()
       "spaceProfiles": [
         {
           "data": {
-            "checkAllThatApplys": [
+            "checkAllThatApplies": [
               {
               "What are your favorite drinks?": ["Beer", "Rum"]
               },
@@ -82,7 +82,7 @@ User.find({}).remove()
       "spaceProfiles": [
         {
           "data": {
-            "checkAllThatApplys": [
+            "checkAllThatApplies": [
               {
               "What are your favorite drinks?": ["Beer"]
               },
@@ -134,7 +134,7 @@ User.find({}).remove()
       "spaceProfiles": [
         {
           "data": {
-            "checkAllThatApplys": [
+            "checkAllThatApplies": [
               {
               "What are your favorite drinks?": ["Vodka", "Brandy"]
               },
