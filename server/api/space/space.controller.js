@@ -131,7 +131,7 @@ export function leave(req, res) {
     .then(ResponseHandler.handleEntityNotFound(res))
     .then(space => {
       // Clear users in space
-      const removedUserArray = space.usersInSpace.filter(userObj => userObj.id === String(user.id));
+      const removedUserArray = space.usersInSpace.filter(userObj => userObj.id !== String(user.id));
       space.usersInSpace = removedUserArray;
       return space.save()
         .then(updated => {
@@ -240,7 +240,6 @@ export function feed(req, res) {
       // Get general ads from space
       let ads = space.ads;
 
-      // Also add in ads specific to beacons
       const beaconAds = findAllAdsInTheseBeacons(beacons, space.beacons);
       ads = ads.concat(beaconAds);
 
