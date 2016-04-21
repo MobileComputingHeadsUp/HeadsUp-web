@@ -155,8 +155,15 @@ export function addSpaceProfile(req, res) {
     user.save()
       .then(updated => {
         // Add user to the space.
-        SpaceController.addUserToSpace(user.id, spaceID);
-        return res.status(200).json(updated);
+        return SpaceController.addUserToSpace(user.id, spaceID)
+          .then(updatedSpace => {
+            const response = {
+              spaceID: updatedSpace._id,
+              action: "SPACE_DASH"
+            };
+            return res.status(200).json(response);
+          })
+          .catch(ResponseHandler.handleError(res));
       });
 
 }
