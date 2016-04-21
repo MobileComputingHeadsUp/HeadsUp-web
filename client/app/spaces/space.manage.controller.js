@@ -13,10 +13,12 @@ class SpaceManageController {
     const currentSpaceId = this.$stateParams.id;
 
     this.currentSpace = {};
+    this.currentBeacons = [];
     // Load the space from server:
     this.findOneSpace(currentSpaceId)
       .then(space => {
          this.currentSpace = space;
+         this.currentBeacons = space.beacons;
          console.log(this.currentSpace);
        })
       .catch(error => {
@@ -27,6 +29,7 @@ class SpaceManageController {
     // Init empty arrays of announcemnts and ads
     this.announcments = [];
     this.ads = [];
+    
   }
 
   findOneSpace(id) {
@@ -68,6 +71,8 @@ class SpaceManageController {
         .then((response) => {
           // Update data we're displaying
           this.currentSpace = response;
+
+          this.currentBeacons = response.beacons;
 
           // Clear Stuff
           this.announcments = [];

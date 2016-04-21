@@ -127,12 +127,24 @@
           <div class="row">
             <div class="row">
               <h5>Current Advertisements</h5>
-              <ul class="collection">
+              <ul class="collection" id-"space-list">
+                <label class="active" for="space-list">Ads For Space </label>
                 <li class="collection-item avatar" ng-repeat="an in sm.currentSpace.ads">
                   <img ng-src="{{an.imgUrl}}" alt="" class="circle">
                   <span class="title">{{an.title}}</span>
                   <p>{{an.description}}</p>
                   <a href="#!" ng-click="sm.currentSpace.ads.splice($index,1)" class="secondary-content"><i class="material-icons">delete</i></a>
+                </li>
+              </ul>
+
+              <ul class="collection"  id="beacon-list" ng-repeat="beacon in sm.currentBeacons">
+                <label class="active" for="beacon-list">Ads For Beacon: {{beacon.name}} </label>
+                <li class="collection-item avatar"  ng-repeat="ad in beacon.vicinityAds.ads">
+
+                  <img ng-src="{{ad.imgUrl}}" alt="" class="circle">
+                  <span class="title">{{ad.title}}</span>
+                  <p>{{ad.description}}</p>
+                  <a href="#!" ng-click="beacon.vicinityAds.ads.splice($index,1)" class="secondary-content"><i class="material-icons">delete</i></a>
                 </li>
               </ul>
             </div>

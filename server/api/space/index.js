@@ -18,7 +18,7 @@ router.delete('/:id', controller.destroy);
 
 // Space dash feed
 router.post('/dash', middleware.attatchUserFromGoogleID, controller.feed);
-// router.post('/leave', middleware.attatchUserFromGoogleID, controller.leave);
+router.post('/leave', middleware.attatchUserFromGoogleID, controller.leave);
 
 // Debug stuff
 router.get('/clear/users/:id', controller.clearUsersFromSpace);
