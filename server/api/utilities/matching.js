@@ -92,12 +92,12 @@ function findMatchesInSpaceProfiles(profileA, profileB, requiredUserInfo) {
   console.log(profileB);
 
   // Get A's profile info
-  const checksA = profileA.data.checkAllThatApplys;
+  const checksA = profileA.data.checkAllThatApplies;
   const dropdownsA = profileA.data.dropdowns;
   const freeResponsesA = profileA.data.freeResponses;
 
   // Get B's profile info
-  const checksB = profileB.data.checkAllThatApplys;
+  const checksB = profileB.data.checkAllThatApplies;
   const dropdownsB = profileB.data.dropdowns;
   const freeResponsesB = profileB.data.freeResponses;
 
