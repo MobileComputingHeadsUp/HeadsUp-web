@@ -15,6 +15,8 @@ User.find({}).remove()
       "name": "Jane Smith",
       "email": "nqwdnqwiondoiwqd@gmail.com",
       "provider": "google",
+      "bio": "Hi, my name is Jane! Nice to meet you.",
+      "gender": "female",
       "google": {
         "kind": "plus#person",
         "id": "105979492421200560976",
@@ -26,7 +28,7 @@ User.find({}).remove()
         "language": "en",
         "verified": false
       },
-      "birthday": "1990-04-03T00:00:00.000Z",
+      "birthday": "1993-04-03T00:00:00.000Z",
       "spaceProfiles": [
         {
           "data": {
@@ -67,12 +69,14 @@ User.find({}).remove()
       "name": "Melany Jones",
       "email": "qsqsq@gmail.com",
       "provider": "google",
+      "bio": "Hi, I'm really into Internet of Things!",
+      "gender": "female",
       "google": {
         "kind": "plus#person",
         "id": "105979492428905560976",
         "displayName": "Jane Smith",
         "image": {
-        "url": "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50",
+        "url": "http://i.imgur.com/bRPd54J.jpg",
         "isDefault": true
         },
         "language": "en",
@@ -119,18 +123,20 @@ User.find({}).remove()
       "name": "John Doe",
       "email": "beeeee@gmail.com",
       "provider": "google",
+      "bio": "Hello, my name is John. I play lots of World of Warcraft",
+      "gender": "male",
       "google": {
         "kind": "plus#person",
         "id": "105978976421200560976",
         "displayName": "12e Smith",
         "image": {
-        "url": "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50",
+        "url":"http://images-cdn.moviepilot.com/images/c_fill,h_511,w_682/t_mp_quality/ylntes64dpz6mhybwgkq/it-s-been-11-years-since-the-numa-numa-guy-went-viral-wonder-what-he-s-been-up-to-since-384821.jpg",
         "isDefault": true
         },
         "language": "en",
         "verified": false
       },
-      "birthday": "1990-04-03T00:00:00.000Z",
+      "birthday": "1998-04-03T00:00:00.000Z",
       "spaceProfiles": [
         {
           "data": {
