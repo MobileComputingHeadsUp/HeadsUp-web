@@ -204,7 +204,7 @@ export function addUserToSpace(userId, spaceId) {
 export function feed(req, res) {
   // Get necessary data yo
   const spaceID = req.body.space_id;
-  const beacons = req.body.beacons;
+  const beacons = JSON.parse(req.body.beacons);
   const user = req.user;
 
   // Get the space
