@@ -11,8 +11,8 @@ import path from 'path';
 export default function(app) {
 
   //setup healthcheck api
-  app.use('/healthcheck', function (req, res) {
-    res.status(200)
+  app.get('/healthcheck', function (req, res) {
+    res.sendStatus(200)
   })
 
   // Insert routes below
