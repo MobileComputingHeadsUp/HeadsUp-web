@@ -17,16 +17,35 @@
             <div class="row">
               <h5>Basic Space Info</h5>
               <label style="display: block; margin-bottom: 1.0rem">
-                This is basic information about your space. You will be able to add more beacons later!
+                Update Basic information about your space
               </label>
               <label for="space-name">Space Name</label>
               <input type="text" id="space-name" placeholder="New space's name" ng-model="sm.currentSpace.name">
               <label for="space-desc">Space Description</label>
               <input type="text" id="space-desc" placeholder="New space's description" ng-model="sm.currentSpace.description">
-              <div class = "row" ng-repeat="beacon in sm.currentSpace.beacons">
+              <h5>Beacons</h5>
+              <ul class="collection">
+                <li class="collection-item clearfix" ng-repeat="bcn in sm.currentSpace.beacons" ng-hide="an.deleted">
+                  <div>
+                    {{bcn.name}}
+                    <a href="#" ng-click="sm.currentSpace.beacons.splice($index,1)" class="secondary-content"><i class="material-icons">delete</i></a>
+                  </div>
+                </li>
+              </ul>
+              <div class = "row" ng-repeat="beacon in sm.newBeacons">
                 <div class = "col s11">
+                  <label for="space-beacon">Beacon Name</label>
+                  <input type="text" id="space-beacon"  placeholder="New beacon name" ng-model="beacon.name" required>
                   <label for="space-beacon">Beacon Identifier</label>
-                  <input type="text" id="space-beacon"  placeholder="New space's beacon id" ng-model="beacon.identifier" required>
+                  <input type="text" id="space-beacon"  placeholder="New beacon identifier" ng-model="beacon.identifier" required>
+                  <!-- Switch -->
+                  <div class="switch" style="padding-top: 3%">
+                    <label>
+                      Will this be used as an entry beacon for your space?
+                      <input type="checkbox" ng-model="beacon.entry">
+                      <span class="lever"></span>
+                    </label>
+                  </div>
                 </div>
                 <div class = "col s1">
                   <a class="btn-floating btn-large waves-effect waves-light red" ng-click="sm.deleteBeacon(beacon)"><i class="material-icons">close</i></a>
@@ -127,8 +146,8 @@
           <div class="row">
             <div class="row">
               <h5>Current Advertisements</h5>
-              <ul class="collection" id-"space-list">
-                <label class="active" for="space-list">Ads For Space </label>
+              <ul class="collection" id-"space-list" ng-hide="sm.currentSpace.ads.length === 0">
+                <label class="active" for="space-list">Space Ads</label>
                 <li class="collection-item avatar" ng-repeat="an in sm.currentSpace.ads">
                   <img ng-src="{{an.imgUrl}}" alt="" class="circle">
                   <span class="title">{{an.title}}</span>
@@ -137,8 +156,8 @@
                 </li>
               </ul>
 
-              <ul class="collection"  id="beacon-list" ng-repeat="beacon in sm.currentBeacons">
-                <label class="active" for="beacon-list">Ads For Beacon: {{beacon.name}} </label>
+              <ul class="collection"  id="beacon-list" ng-repeat="beacon in sm.currentBeacons" ng-hide="beacon.vicinityAds.ads.length === 0">
+                <label class="active" for="beacon-list">Beacon Specific Ads: {{beacon.name}} </label>
                 <li class="collection-item avatar"  ng-repeat="ad in beacon.vicinityAds.ads">
 
                   <img ng-src="{{ad.imgUrl}}" alt="" class="circle">

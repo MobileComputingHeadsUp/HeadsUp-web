@@ -29,7 +29,8 @@ class SpaceManageController {
     // Init empty arrays of announcemnts and ads
     this.announcments = [];
     this.ads = [];
-    
+    this.newBeacons = [];
+
   }
 
   findOneSpace(id) {
@@ -39,9 +40,10 @@ class SpaceManageController {
   addBeacon() {
     var newBeacon = {
       identifier: '',
-      name: 'new beacon'
+      name: '',
+      entry: true
     };
-    this.currentSpace.beacons.push(newBeacon);
+    this.newBeacons.push(newBeacon);
     console.log(this.currentSpace.beacons);
   }
   deleteBeacon(beacon) {
@@ -53,12 +55,16 @@ class SpaceManageController {
   }
   saveSpace() {
     if (this.currentSpace) {
-      // Get the ad and announcements
+      // Get the ad and announcements and beacons
       const spaceAnnouncements = this.currentSpace.announcments;
       const spaceAds = this.currentSpace.ads;
+      const spaceBeacons = this.currentSpace.beacons;
 
       // Add announcments to the spaces announcements
       this.currentSpace.announcments = spaceAnnouncements.concat(this.announcments);
+
+      // Add newly added beacons to the spaces list o beacons
+      this.currentSpace.beacons = spaceBeacons.concat(this.newBeacons);
 
       // Ad ads to beacons if they are associated with a beacon
       this.adAdsToBeacon(this.ads);
@@ -77,6 +83,7 @@ class SpaceManageController {
           // Clear Stuff
           this.announcments = [];
           this.ads = [];
+          this.newBeacons = [];
 
           // Show toast
           Materialize.toast('Your Space has been updated!', 4000);
