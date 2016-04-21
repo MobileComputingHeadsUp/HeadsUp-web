@@ -12,6 +12,7 @@ var AdSchema = new Schema({
   description: String,
   imgUrl: String,
   link: String,
+  timestamp:  { type: Number, default: function() { return new Date().getTime()} }
 });
 
 // Export the schema, not as a mongoose model since we want to use this as a sub document.
