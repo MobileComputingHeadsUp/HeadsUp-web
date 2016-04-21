@@ -41,6 +41,12 @@ Thing.find({}).remove()
     });
   });
 
+
+Space.find({}).remove()
+  .then(() => {
+
+  });
+
 // User.find({}).remove();
 // Space.find({}).remove();
 // Beacon.find({}).remove();
